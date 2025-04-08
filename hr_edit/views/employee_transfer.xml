@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <!-- Employee Transfer Search View -->
+    <record id="employee_transfer_view_search" model="ir.ui.view">
+        <field name="name">employee.transfer.view.search</field>
+        <field name="model">employee.transfer</field>
+        <field name="arch" type="xml">
+            <search string="Employee Transfer">
+                <field name="job_code" string="Job Code"/>
+                <field name="name" string="Employee"
+                       filter_domain="['|','|', ('name','ilike',self), ('name', 'ilike', self), ('employee_id', 'child_of', self)]"/>
+                <field name="country_id" string="Nationality"/>
+                <field name="work_id" string="New Project"/>
+                <field name="from_work_id" string="Current Project"/>
+                <field name="state" string="Status"/>
+                <field name="foreman_new" string="Foreman New"/>
+                <field name="foreman_current" string="Foreman Current"/>
+
+                <filter name="draft" string="Draft"
+                        domain="[('state','=','draft')]"/>
+                <filter name="done" string="Done"
+                        domain="[('state', '=', 'done')]"/>
+                <group expand="0" string="Group By">
+                    <filter name="employee" string="Employee"
+                            context="{'group_by':'employee_id'}"/>
+                    <filter name="status" string="Status"
+                            context="{'group_by':'state'}"/>
+                    <filter string='Date' name="group_by_created_date" context="{'group_by': 'date_update'}"/>
+                    <filter string='Date' invisible="1" name="group_by_date_update"
+                            context="{'group_by': 'date_update:day'}"/>
+                    <filter name="work_id" string="New Project"
+                            context="{'group_by':'work_id'}"/>
+                    <filter name="from_work_id" string="Current Project"
+                            context="{'group_by':'from_work_id'}"/>
+                    <filter name="foreman_new" string="Foreman New"
+                            context="{'group_by':'foreman_new'}"/>
+                    <filter name="foreman_current" string="Foreman Current"
+                            context="{'group_by':'foreman_current'}"/>
+                    <filter name="responsible" string="Responsible Person"
+                            context="{'group_by':'responsible'}"/>
+                    <filter name="job_code" string="Job Code"
+                            context="{'group_by':'job_code'}"/>
+                    <filter name="country_id" string="Nationality"
+                            context="{'group_by':'country_id'}"/>
+                    <filter name="company_id" string="Company"
+                            context="{'group_by':'company_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+    <record id="action_cancel_transfer" model="ir.actions.server">
+        <field name="name">Cancel</field>
+        <field name="model_id" ref="hr_edit.model_employee_transfer"/>
+        <field name="binding_model_id" ref="hr_edit.model_employee_transfer"/>
+        <field name="state">code</field>
+        <field name="code">
+            records.cancel_transfer()
+        </field>
+    </record>
+     <record id="action_transfer" model="ir.actions.server">
+        <field name="name">Transfer</field>
+        <field name="model_id" ref="hr_edit.model_employee_transfer"/>
+        <field name="binding_model_id" ref="hr_edit.model_employee_transfer"/>
+        <field name="state">code</field>
+        <field name="code">
+            records.transfer()
+        </field>
+    </record>
+    <!-- Employee Transfer Form View -->
+    <record id="employee_transfer_view_form" model="ir.ui.view">
+        <field name="name">employee.transfer.view.form</field>
+        <field name="model">employee.transfer</field>
+        <field name="arch" type="xml">
+            <form string="Employee Transfer">
+                <header>
+                    <button name="transfer" string="Transfer"
+                            class="oe_highlight" type="object"
+                            invisible="state != 'draft'"
+                            groups="hr.group_hr_manager"/>
+                    <!--                    <button name="action_receive_employee" string="Receive"-->
+                    <!--                            class="oe_highlight" type="object"-->
+                    <!--                            groups="hr.group_hr_manager"-->
+                    <!--                            invisible="not transferred or state != 'transfer'"/>-->
+                    <button name="cancel_transfer" string="Cancel"
+                            type="object"
+                            invisible="state in ('draft', 'cancel', 'done')"
+                            groups="hr.group_hr_manager"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,transfer,done"/>
+                </header>
+                <sheet>
+                    <div class="oe_title oe_left">
+                        <h2>
+                            <field name="name" class="oe_inline"
+                                   placeholder="Name"/>
+                        </h2>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="employee_id"
+                                   options="{'no_create': True}"
+                                   readonly="state != 'draft'"/>
+                            <field name="job_code"
+                                   options="{'no_create': True}"
+                                   readonly="state != 'draft'"/>
+                            <field name="country_id" readonly="1"/>
+                            <field name="passport_id" readonly="1"/>
+                            <field name="eid_num" readonly="1"/>
+                            <field name="active_company_bbc"/>
+
+                        </group>
+                        <group>
+                            <field name="date" readonly="1"/>
+                            <field name="date_update" readonly="state != 'draft'"/>
+                            <field name="from_work_id"/>
+                            <field name="foreman_current" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                            <field name="work_id"
+                                   options="{'no_create': True}"
+                                   readonly="state != 'draft'"/>
+                            <field name="safety" decoration-danger="safety == 'No'" decoration-sucuss="safety == 'Yes'"
+                                   readonly="1"/>
+                            <field name="foreman_new" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                            <field name="company_id" readonly="1"
+                                   options="{'no_create': True}"/>
+                            <field name="responsible" readonly="1"
+                                   options="{'no_create': True}"/>
+                        </group>
+                    </group>
+                    <notebook colspan="4">
+                        <page string="Internal Notes">
+                            <field name="note"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Employee Transfer Tree View -->
+    <record id="employee_transfer_view_tree" model="ir.ui.view">
+        <field name="name">employee.transfer.view.tree</field>
+        <field name="model">employee.transfer</field>
+        <field name="arch" type="xml">
+            <tree string="Employee Transfer" editable="top" decoration-info="state == 'draft' "
+                  decoration-muted="state =='cancel' "
+                  decoration-success="state =='transfer' ">
+                <field name="name" optional="hide"/>
+                <field name="date" optional="show"/>
+                <field name="lock_date" invisible="1" column_invisible="1"/>
+                <field name="date_update" optional="show" readonly="lock_date"/>
+                <field name="job_code" optional="show" readonly="state != 'draft'"/>
+                <field name="employee_id" optional="show" readonly="state != 'draft'"/>
+                <field name="job_position" optional="show" readonly="state != 'draft'"/>
+                <field name="from_work_id" optional="show" readonly="state != 'draft'"/>
+                <field name="foreman_current" optional="show" widget="many2many_tags_avatar"/>
+                <field name="work_id" optional="show" readonly="state != 'draft'"/>
+                <field name="foreman_new" optional="show" widget="many2many_tags_avatar" readonly="state != 'draft'"/>
+                <field name="safety" optional="hide" decoration-danger="safety == 'NO'"
+                       decoration-success="safety == 'YES'" decoration-primary="safety == 'BANNED'"
+                       readonly="state != 'draft'"/>
+                <field name="country_id" optional="hide"/>
+                <field name="passport_id" optional="hide"/>
+                <field name="eid_num" optional="hide"/>
+                <field name="company_id" optional="hide"/>
+                <field name="active_company_bbc" optional="hide"/>
+                <field name="responsible" optional="hide"/>
+                <field name="state" optional="show" widget="badge" decoration-info="state == 'draft' "
+                       decoration-muted="state =='cancel' "
+                       decoration-success="state =='transfer' "/>
+                <button name="transfer" invisible="state != 'draft'" type="object" string="Transfer"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Employee Transfer Action -->
+    <record id="employee_transfer_action" model="ir.actions.act_window">
+        <field name="name">Transfer</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">employee.transfer</field>
+        <field name="context">{'search_default_group_by_date_update': 1}</field>
+        <field name="view_mode">tree</field>
+        <field name="view_id" eval="False"/>
+        <field name="domain">[]</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Create a new Employee Transfer.
+            </p>
+        </field>
+    </record>
+
+    <!-- Employee Transfer Menu -->
+    <menuitem id="employee_transfer_menu_open_transfer"
+              name="Transfers"
+              sequence="10"
+              groups="hr.group_hr_manager"
+              web_icon="hr_edit,static/description/transfer_icon.png"/>
+    <menuitem id="employee_project_menu_app"
+              name="Project"
+              sequence="7"
+              groups="hr.group_hr_manager"
+              parent="hr_edit.employee_transfer_menu_open_transfer"
+    />
+
+    <menuitem id="employee_transfer_menu_create_transfer"
+              parent="employee_transfer_menu_open_transfer"
+              name="Transfers"
+              sequence="2"
+              action="employee_transfer_action"
+              groups="hr.group_hr_manager"
+
+    />
+</odoo>

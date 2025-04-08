@@ -1,0 +1,101 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="view_overtime_search" model="ir.ui.view">
+        <field name="name">overtime</field>
+        <field name="model">over.time</field>
+        <field name="arch" type="xml">
+            <search string="overtime search">
+                <field name="job_code"/>
+                <field name="employee_id"/>
+                <field name="date"/>
+                <field name="absence_next_day"/>
+                <filter name="filter_date" string="Date" domain="[('date', '=', context_today().strftime('%Y-%m-%d'))]"/>
+                <separator/>
+
+                <group expand='0' string='Group by...'>
+                    <filter string='Date' name="group_by_created_date" context="{'group_by': 'date'}"/>
+                    <filter string='Designation' name="group_by_designation" context="{'group_by': 'designation'}"/>
+                    <filter string='Work location' name="group_by_work" context="{'group_by': 'work_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+    <record id="overtime_tree_view" model="ir.ui.view">
+        <field name="name">over.time.tree</field>
+        <field name="model">over.time</field>
+        <field name="arch" type="xml">
+            <tree editable="bottom" decoration-danger="not paid">
+            <header>
+           
+              <button 
+                            class="btn-primary" 
+                        display="always" type="object" name="create_over_time" string="Create Overtime"/>
+             
+ </header>
+
+                <field name="job_code" readonly="1"/>
+
+                <field name="employee_id" readonly="1"/>
+                <field name="designation" optional="show" readonly="1"/>
+                <field name="work_id"/>
+                <field name="date" readonly="1"/>
+                <field name="absence_next_day"/>
+                <field name="paid"/>
+                <field name="total"/>
+                <field name="hours_m" sum="hours_m" optional="hide" readonly="1"/>
+                <field name="hours_h" sum="hours_h" optional="hide" readonly="1"/>
+                <field name="hours_o" sum="hours_o" optional="hide" readonly="1"/>
+                <field name="rush_coat" sum="rush_coat" optional="hide" readonly="1"/>
+                <field name="external_rush" sum="external_rush" optional="hide" readonly="1"/>
+                 <field name="layout_hour" sum="Layout Hour" optional="hide" readonly="1"/>
+                <field name="hollow_hour" sum="hollow" optional="hide" readonly="1"/>
+                <field name="aac_sob_hour" sum="aac" optional="hide" readonly="1"/>
+                <field name="external_plaster_hour" sum="external_plaster" optional="hide"
+                readonly="1"/>
+                <field name="internal_plaster_hour" sum="internal_plaster" optional="hide"
+                readonly="1"/>
+
+                <field name="internal_angles_hour" sum="internal_angles" optional="hide"
+                readonly="1"/>
+                <field name="external_angles_hour" sum="external_angles" optional="hide"
+                readonly="1"/>
+                <field name="point_hour" sum="point" optional="hide"
+                readonly="1"/>
+                <field name="point_s" sum="point_s" optional="hide"
+                readonly="1"/>
+                <field name="point_external" sum="point_external" optional="hide"
+                readonly="1"/>
+                <field name="floor_tiles" sum="floor_tiles" optional="hide" readonly="1"/>
+                <field name="parquet_tiles" sum="parquet_tiles" optional="hide" readonly="1"/>
+                <field name="wall_tiles" sum="wall_tiles" optional="hide" readonly="1"/>
+                <field name="mosaic" sum="mosaic" optional="hide" readonly="1"/>
+                <field name="hreshold" sum="hreshold" optional="hide" readonly="1"/>
+                <field name="layout_tiles" sum="layout_tiles" optional="hide" readonly="1"/>
+                <field name="skirting" sum="skirting" optional="hide" readonly="1"/>
+
+            </tree>
+        </field>
+    </record>
+
+    <record id="employee_work_overtime_action" model="ir.actions.act_window">
+        <field name="name">Overtime</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">over.time</field>
+
+        <field name="view_mode">tree</field>
+        <field name="search_view_id" ref="view_overtime_search"/>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Create a new Overtime.
+            </p>
+        </field>
+    </record>
+    <menuitem id="employee_transfer_menu_overtime"
+              parent="hr_payroll.menu_hr_payroll_payslips"
+              name="OVERTIME"
+              sequence="30"
+              action="hr_edit.employee_work_overtime_action"
+              groups="hr.group_hr_manager"
+
+    />
+</odoo>

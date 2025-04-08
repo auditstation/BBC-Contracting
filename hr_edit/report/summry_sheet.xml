@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="report_project_workers">
+        <t t-call="web.html_container">
+            
+            <div class="page">
+                <t t-call="web.external_layout">
+                <h2 style="text-align: center;">Project Worker Distribution</h2>
+                <table class="table table-bordered" style="width: 100%; text-align: center;">
+                    <thead>
+                        <tr>
+                            <th rowspan="2">Project Name</th>
+                            <th colspan="8">Jobs on Site</th>
+                            <th rowspan="2">Total Workers</th>
+                            <th rowspan="2">Foreman</th>
+                        </tr>
+                        <tr>
+                            <th>Preparation</th>
+                            <th>Plaster</th>
+                            <th>Operator</th>
+                            <th>Rush Coat</th>
+                            <th>Block</th>
+                            <th>Tile Helper</th>
+                            <th>Tile Mason</th>
+                            <th>Helper</th>
+                        </tr>
+
+                    </thead>
+                    <tbody>
+                        <t t-foreach="docs.get_data_body()" t-as="line">
+                            <tr>
+                                <td>
+                                    <t t-esc="line['project']"/>
+                                </td>
+                                <t t-foreach="line['workers_count']" t-as="c">
+
+                                    <td>
+
+                                        <t t-esc="c"/>
+                                    </td>
+                                </t>
+                                <td>
+                                    <t t-esc="line['total_workers']"/>
+                                </td>
+                                <td>
+                                    <t t-esc="line['foreman']"/>
+                                </td>
+                            </tr>
+                        </t>
+
+                        <tr style="background-color: #F1F1F1;width: 100%;">
+                            <td>
+                                <strong>TOTAL</strong>
+                            </td>
+                            <t t-foreach="docs.get_data_total()" t-as="t">
+                                <td>
+
+
+                                    <strong>
+                                        <t t-esc="t"/>
+                                    </strong>
+                                </td>
+                            </t>
+                            <td>
+                                
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table></t>
+            </div>
+
+        </t>
+    </template>
+    <record id="report_project_workers_pdf" model="ir.actions.report">
+        <field name="name">Project Workers Report</field>
+        <field name="model">work.location</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">hr_edit.report_project_workers</field>
+        <field name="report_file">hr_edit.report_project_workers</field>
+        <field name="binding_model_id" ref="model_work_location"/>
+        <field name="binding_type">report</field>
+
+    </record>
+
+
+</odoo>

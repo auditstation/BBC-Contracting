@@ -1,0 +1,15 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+
+access_installment_line,access.installment.line,model_installment_line,,1,1,1,1
+access_work_location,access.work.location,model_work_location,,1,1,1,1
+access_location_history,access.location.history,model_location_history,,1,1,1,1
+access_employee_transfer,access.employee.transfer,model_employee_transfer,,1,1,1,1
+access_job_history,access.job.history,model_job_history,,1,1,1,1
+access_work_allocation,access.work.allocation,model_work_allocation,,1,1,1,1
+access_work_location_line,access.work.location.line,model_work_location_line,,1,1,1,1
+access_production_line,access.production.line,model_production_line,,1,1,1,1
+access_saftey_induction,access.saftey.induction,model_saftey_induction,,1,1,1,1
+access_project_line,access.project.line,model_project_line,,1,1,1,1
+access_deduction_line,access.deduction.line,model_deduction_line,,1,1,1,1
+access_leave_sett,access.leave.settl,model_leave_settl,,1,1,1,1
+access_overtime,access.over.time,model_over_time,,1,1,1,1

@@ -1,0 +1,76 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* hr_edit
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 17.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-02-23 11:45+0000\n"
+"PO-Revision-Date: 2025-02-23 11:45+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: hr_edit
+#: model:hr.job,name:hr_edit.area_manager
+msgid "AREA MANAGER"
+msgstr "مدير المنطقة"
+
+#. module: hr_edit
+#: model:hr.job,name:hr_edit.block
+msgid "BLOCK MASON"
+msgstr "بناء الكتل"
+
+#. module: hr_edit
+#: model:hr.job,name:hr_edit.civil_engineer
+msgid "CIVIL ENGINEER"
+msgstr "مهندس مدنس"
+
+#. module: hr_edit
+#: model:hr.job,name:hr_edit.foreman
+msgid "FOREMAN"
+msgstr "رئيس العمال"
+
+#. module: hr_edit
+#: model:hr.job,name:hr_edit.helper
+msgid "HELPER"
+msgstr "المساعد"
+
+#. module: hr_edit
+#: model:hr.job,name:hr_edit.operation
+msgid "OPERATOR"
+msgstr "المشغل"
+
+#. module: hr_edit
+#: model:hr.job,name:hr_edit.plaster
+msgid "PLASTER MASON"
+msgstr "عامل بناء جبس"
+
+#. module: hr_edit
+#: model:hr.job,name:hr_edit.prep
+msgid "PREPARATION MASON"
+msgstr "معد جبس"
+
+#. module: hr_edit
+#: model:hr.job,name:hr_edit.quantity_surveyor
+msgid "QUANTITY SURVEYOR"
+msgstr "حاسب الكميات"
+
+#. module: hr_edit
+#: model:hr.job,name:hr_edit.rush
+msgid "RUSH COAT"
+msgstr ""
+
+#. module: hr_edit
+#: model:hr.job,name:hr_edit.tile_h
+msgid "TILE HELPER"
+msgstr ""
+
+#. module: hr_edit
+#: model:hr.job,name:hr_edit.tile_m
+msgid "TILE MASON"
+msgstr ""

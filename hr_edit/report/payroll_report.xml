@@ -1,0 +1,209 @@
+<odoo>
+<template id="hr_edit.leave_settlement_report">
+   <t t-call="web.html_container">
+        
+        <t t-foreach="docs" t-as="doc">
+            <style>
+                td {
+               border: 1px solid black;
+             
+                }
+                </style>
+            
+        <div class="page">
+            <!-- Leave Settlement Form Header -->
+             <table style="width: 100%; margin-top: 20px; border-collapse: collapse; border: 1px solid black;">
+                <tr>
+                    <td colspan="4" style="text-align: center; font-weight: bold; padding: 20px;">SETTLEMENT FORM</td>
+                </tr>
+                <!-- Employee Information -->
+                <tr>
+                    <td>EMP CODE</td>
+                    <td><span t-esc="doc.employee_id.job_code"/></td>
+                    <td>VISA</td>
+                    <td><span t-esc="doc.visa"/></td>
+                   
+                    
+                   
+                    
+
+                </tr>
+                <tr>
+                    <td>EMPLOYEE NAME</td>
+                    <td><span t-esc="doc.employee_id.name"/></td>
+                    <td>MOL NO</td>
+                    <td><span t-esc="doc.mol_no"/></td>
+                  
+                    
+                </tr>
+                <tr>
+                    <td>DESIGNATION</td>
+                    <td><span t-esc="doc.employee_id.job_title_visa"/></td>
+                     <td>Salary</td>
+                    <td colspan="3"><t t-esc="doc.salary"/></td>
+                    
+                </tr>
+                <tr>
+                    <td>NATIONALITY</td>
+                    <td><t t-esc="doc.employee_id.country_id.name"/></td>
+                    <td>Last Working Day</td>
+                    <td><t t-esc="doc.last_date"/></td>
+                   
+                </tr>
+                <!-- Last Wages Information -->
+                <tr>
+                    <td>LAST WAGES PAID</td>
+                    <td colspan="3"><t t-esc="doc.last_wage"/></td>
+                    
+                </tr>
+            </table>
+
+            <!-- Earnings Table -->
+            <table style="width: 100%; margin-top: 20px; border-collapse: collapse; border: 1px solid black;">
+                
+<tr>
+                    <td colspan="3" style="text-align: center; font-weight: bold;">Earnings</td>
+                </tr>
+                    <tr style="border: 1px solid black;">
+                        <td style="text-align:center">DESCRIPTION</td>
+
+                        <td>DAYS</td>
+                        <td>AMOUNT</td>
+                    </tr>
+                    
+                
+                      <t t-set="lines" t-value="doc.non_payslip_ids"/>
+                            <tr t-foreach="lines" t-as="move">
+                                <td>
+                                    <span t-field="move.name"/>
+
+                                </td>
+                                <td>
+                                    <span t-field="move.days"/>
+
+                                </td>
+                                 <td>
+                                    <span t-field="move.amount"/>
+
+                                </td>
+
+                            </tr>
+                            <tr>
+                                <td style="text-align:center">Total Earnings</td>
+                                <td></td>
+                                <td><t t-out="sum(lines.mapped('amount'))"/></td>
+                            </tr>
+                
+            </table>
+             <table style="width: 100%; margin-top: 20px; border-collapse: collapse; border: 1px solid black;">
+                <tr>
+                    <td colspan="2" style="text-align: center; font-weight: bold;">Deductions</td>
+                </tr>
+                    <tr style="border: 1px solid black;">
+                        <td style="text-align:center">DESCRIPTION</td>
+
+                        
+                        <td>AMOUNT</td>
+                    </tr>
+                
+                      <t t-set="deduction" t-value="doc.deduction_ids"/>
+                            <tr t-foreach="deduction" t-as="move">
+                                <td>
+                                    <span t-field="move.name"/>
+
+                                </td>
+                          
+                                 <td>
+                                    <span t-field="move.amount"/>
+
+                                </td>
+
+                            </tr>
+                               <tr>
+                                <td style="text-align:center">Total Deductions</td>
+                                
+                                <td><t t-out="sum(deduction.mapped('amount'))"/></td>
+                            </tr>
+                
+            </table>
+              <table style="width: 100%; margin-top: 20px; border-collapse: collapse; border: 1px solid black;">
+                
+
+                    <tr style="border: 1px solid black;">
+                      
+                
+                    <td> <strong>Amount On Hold</strong></td>
+                      
+                                <td>
+                                   
+                                    <span t-field="doc.hold"/>
+
+                                </td>
+                                </tr>
+                          
+                                 
+
+               
+            </table>
+      
+  
+      <table class="table" style="border: 1px solid black; width: 50%; margin-top:20px; margin-bottom:20px;">
+        <tr>
+          <td style="border: 1px solid black;">Received Payment</td>
+          <td style="border: 1px solid black;">CASH</td>
+          <td style="border: 1px solid black;">
+          <t t-if="doc.cash != 0">
+                <span><span t-field="doc.cash"/>
+                            </span>
+                                                    </t>
+
+            <t t-else=""><span/></t>
+          </td>
+        </tr>
+        <tr>
+          <td style="border: 1px solid black;"/>
+          <td style="border: 1px solid black;">WPS</td>
+          <td style="border: 1px solid black;">
+          <t t-if="doc.wps != 0">
+           
+                <span t-field="doc.wps"/>
+                </t>
+            <t t-else=""><span/></t>
+          </td>
+        </tr>
+      </table>
+      <div class="row mt-5">
+    
+    <span> I,the undersigned,acknowledge that only the balance till  <t t-esc="doc.last_date"/> BBC BLDG CONT LLC the amount of Aed due from <t t-esc="doc.hold"/>
+    
+     </span>
+      </div>
+       <br/>
+                            <div class="oe_structure"/>
+                            <div><h5><u>Employee Name:</u></h5>
+                            <t t-esc="doc.employee_id.name"/>
+                            </div>
+                            <br/>
+                            <div><h5><u>Employee's signature:</u></h5>
+                            <span>______________________________________</span>
+                            </div>
+      
+
+
+
+
+        </div>
+        </t>
+    </t>
+</template>
+ <record id="report_form" model="ir.actions.report">
+        <field name="name">Form Settlement</field>
+        <field name="model">leave.settl</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">hr_edit.leave_settlement_report</field>
+        <field name="report_file">hr_edit.leave_settlement_report</field>
+        <field name="binding_model_id" ref="model_leave_settl"/>
+        <field name="binding_type">report</field>
+
+    </record>
+</odoo>

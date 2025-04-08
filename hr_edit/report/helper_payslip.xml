@@ -1,0 +1,362 @@
+<odoo>
+    <record id="paperformat_helper_report" model="report.paperformat">
+        <field name="name">Helper Report</field>
+        <field name="default" eval="True"/>
+        <field name="default" eval="True"/>
+        <field name="format">custom</field>
+        <field name="page_height">200</field>
+        <field name="page_width">250</field>
+        <field name="orientation">Landscape</field>
+        <field name="margin_top">2</field>
+        <field name="margin_bottom">2</field>
+        <field name="margin_left">7</field>
+        <field name="margin_right">7</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">35</field>
+        <field name="dpi">210</field>
+    </record>
+    <template id="report_helper_payslip">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <t t-foreach="docs" t-as="doc">
+                    <div class="page">
+                        <!-- Header Section -->
+                        <div class="row" style="font-size: 20px;">
+                            <div class="text-center">
+                                <h3>SAMPLE HELPER PAY SLIP</h3>
+                            </div>
+                        </div>
+                        <!--                        style="border: 1px solid #00acdf;"-->
+                        <div class="row" style="font-size: 20px;">
+                            <div class="col-3">
+                                <p>
+                                    <strong>CODE:</strong>
+                                    <span t-field="doc.employee_id.job_code"/>
+                                </p>
+                            </div>
+                            <div class="col-3">
+                                <p>
+                                    <strong>MONTH:</strong>
+                                    <t t-esc="doc.get_month_name(doc.date_from.month)"/>
+                                </p>
+                            </div>
+                            <div class="col-3">
+                                <p>
+                                    <strong>YEAR:</strong>
+                                    <t t-esc="doc.date_from.year"/>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="row" style="font-size: 20px;">
+                            <div class="col-3">
+                                <p>
+                                    <strong>NATIONALITY:</strong>
+                                    <span t-field="doc.employee_id.country_id.name"/>
+                                </p>
+                            </div>
+                            <div class="col-3" style="font-size: 20px;">
+                                <p>
+                                    <strong>VISA:</strong>
+                                    <span t-field="doc.employee_id.branch"/>
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Table for Daily Work and Pay Details -->
+                        <div class="row">
+                            <table class="table table-bordered" style="width: 100%; margin-top: 20px;">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Project</th>
+                                        <th>Hours</th>
+                                        <th>Plaster Above 800</th>
+                                        <th>Absence</th>
+                                        <th>Daily Pay</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-set="total_pay" t-value="0"/>
+                                    <t t-set="total_absence" t-value="0"/>
+                                    <t t-set="total_hour" t-value="0"/>
+                                    <tr style="border-bottom: 2px solid black;">
+                                        <td>
+                                            <span/>
+                                        </td>
+                                        <td>
+                                            <span/>
+                                        </td>
+                                        <td class="text-end">
+                                            <span t-esc="doc.contract_id.hourly_wage"/>
+                                        </td>
+                                        <td>
+                                            <span/>
+                                        </td>
+                                        <td class="text-end">
+                                            <span t-esc="doc.contract_id.hourly_wage"/>
+                                        </td>
+                                        <td>
+                                            <span/>
+                                        </td>
+                                    </tr>
+                                    <t t-foreach="doc.calc_report_data()" t-as="line">
+
+                                        <tr>
+
+
+                                            <td class="text-center">
+                                                <span t-esc="line['i']"/>
+                                            </td>
+                                            <t t-if="line['sunday']">
+                                                <td>
+                                                    <span>-</span>
+                                                </td>
+                                                <td>
+                                                    <span>-</span>
+                                                </td>
+                                                <td>
+                                                    <span>-</span>
+                                                </td>
+                                                <td>
+                                                    <span>-</span>
+                                                </td>
+                                                <td>
+                                                    <span>-</span>
+                                                </td>
+                                            </t>
+                                            <t t-else="">
+                                                <td>
+                                                    <t t-if="line['holiday'] and line['rec'].work_location_id">
+                                                        <span><span t-esc="line['rec'].work_location_id.name"/>,Public
+                                                            Holiday
+                                                        </span>
+                                                    </t>
+                                                    <t t-elif="line['holiday']">
+                                                        <span>Public Holiday
+                                                        </span>
+                                                    </t>
+                                                    <t t-else="">
+                                                        <span t-esc="line['rec'].work_location_id.name"/>
+                                                    </t>
+
+                                                </td>
+                                                <td class="text-end">
+                                                    <t t-if="line['rec'].absence == '1' ">
+                                                        <span>ONE DAY</span>
+                                                    </t>
+                                                    <t t-elif="line['rec'].absence == '2' ">
+                                                        <span>ABSENT</span>
+                                                    </t>
+                                                    <t t-else="">
+                                                        <t t-if="line['holiday']">
+                                                            <span t-esc="line['rec'].hours + 8"/>
+                                                            <t t-set="total_hour"
+                                                               t-value="total_hour + line['rec'].hours + 8"/>
+                                                        </t>
+                                                       
+                                                        <t t-elif="not line['holiday'] and line['rec'].hours == 0">
+                                                            <span>-</span>
+                                                        </t>
+
+                                                        <t t-else="">
+                                                            <span t-esc="line['rec'].hours"/>
+                                                            <t t-set="total_hour"
+                                                               t-value="total_hour + line['rec'].hours "/>
+                                                        </t>
+
+                                                    </t>
+                                                </td>
+                                                <td>
+                                                    <span/>
+                                                    <!--<span t-esc="line['rec'].plaster_above_800"/>-->
+                                                </td>
+                                                <td class="text-end">
+                                                    <t t-if="line['rec'].absence == '1' ">
+                                                        <span>-</span>
+                                                    </t>
+                                                    <t t-elif="line['rec'].absence == '2' ">
+                                                        <t t-set="total_absence"
+                                                           t-value="total_absence + (doc.contract_id.hourly_wage * 10)"/>
+                                                        <span>(</span>
+                                                        <span t-esc="doc.contract_id.hourly_wage * 10"/>
+                                                        <span>)</span>
+                                                    </t>
+                                                    <t t-else="">
+                                                        <span>-</span>
+                                                    </t>
+
+                                                </td>
+                                                <td class="text-end">
+                                                    <t t-if="line['rec'].absence == '1' ">
+                                                        <span>-</span>
+                                                    </t>
+                                                    <t t-elif="line['rec'].absence == '2' ">
+                                                        <span>(</span>
+                                                        <span t-esc="doc.contract_id.hourly_wage * 10"/>
+                                                        <span>)</span>
+                                                    </t>
+                                                    <t t-else="">
+                                                        <t t-if="line['holiday']">
+                                                            <span t-esc="(line['rec'].hours + 8 ) * doc.contract_id.hourly_wage"/>
+                                                            <t t-set="total_pay"
+                                                               t-value="total_pay + ((line['rec'].hours +8) * doc.contract_id.hourly_wage) "/>
+                                                        </t>
+                                                        <t t-else="">
+                                                            <span t-esc="line['rec'].hours * doc.contract_id.hourly_wage"/>
+                                                            <t t-set="total_pay"
+                                                               t-value="total_pay + (line['rec'].hours * doc.contract_id.hourly_wage) "/>
+                                                        </t>
+                                                    </t>
+                                                </td>
+                                            </t>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                                <tfoot>
+                                    <tr class="text-end">
+                                        <td colspan="2" class="text-end">
+                                            <strong>Total</strong>
+                                        </td>
+                                        <td>
+                                            <span t-esc="total_hour"/>
+                                        </td>
+                                        <td/>
+                                        <td>
+                                            <span t-esc="total_absence"/>
+                                        </td>
+                                        <td>
+                                            <span t-esc="round(total_pay,2)"/>
+                                        </td>
+                                    </tr>
+                                </tfoot>
+
+                            </table>
+                        </div>
+                        <!-- Table Total -->
+                        <div class="col-6 text-end"
+                             style="text-align: right;   font-size: 24px;  margin-left: auto;     margin-right: 0;     ">
+                            <table class="table table-bordered"
+                                   style="width: 100%; margin-top: 20px;border-left: 3px solid black; /* Darker outer left border */     border-right: 3px solid black;     border-top: 3px solid black;     border-bottom: 3px solid black;">
+                                <tr height="20">
+                                    <!--style="border-right: 2px solid black;border-top: 2px solid black;border-left: 2px solid black;"-->
+                                    <td>
+                                        <span>WAGES</span>
+                                    </td>
+                                    <td>
+                                        <t t-set="wage" t-value="total_pay - total_absence"/>
+                                        <span t-esc="round(total_pay - total_absence,2)"/>
+                                        <!--                                        <span t-esc="(doc.contract_id.hourly_wage * doc.helper_hour) - (doc.two_day_ded_mason * doc.contract_id.hourly_wage) "/>-->
+                                    </td>
+                                </tr>
+                                 <tr height="20">
+                                    <td>
+                                        <span>OPERATOR BOUNS</span>
+                                    </td>
+                                    <td>
+                                        <span t-esc="doc.operator_absent_hour"/>
+                                    </td>
+                                </tr>
+                                <tr height="20">
+                                    <td>
+                                        <span>NON ABSENT BONUS +</span>
+                                    </td>
+                                    <td>
+                                        <span t-esc="doc.non_absent_hour"/>
+                                    </td>
+                                </tr>
+                                <tr height="20">
+                                    <td>
+                                        <span>ALLOTED BONUS +</span>
+                                    </td>
+                                    <td>
+                                        <span t-esc="doc.allotted_bonus"/>
+                                    </td>
+                                </tr>
+                                <tr height="20">
+                                    <td>
+                                        <span>OTHERS +</span>
+                                    </td>
+                                    <td>
+                                        <span t-esc="doc.other_bonus"/>
+                                    </td>
+                                </tr>
+                                <tr height="20">
+                                    <td>
+                                        <span>SAFETY -</span>
+                                    </td>
+                                    <td>
+                                        <span t-esc="doc.safety_fines"/>
+                                    </td>
+                                </tr>
+                                <tr height="20">
+                                    <td>
+                                        <span>ADVANCE -</span>
+                                    </td>
+                                    <td>
+                                        <span t-esc="doc.sal_adv"/>
+                                    </td>
+                                </tr>
+                                <tr t-if="doc.hold_amount_ded">
+                                    <!--style="border-right: 2px solid black;border-bottom: 2px solid black;border-left: 2px solid black;"-->
+                                    <td colspan="2">
+                                        <span>HOLD -
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span t-esc="doc.hold_amount_ded"/>
+                                    </td>
+                                </tr>
+
+                                <tr t-if="doc.hold_amount_add">
+                                    <!--style="border-right: 2px solid black;border-bottom: 2px solid black;border-left: 2px solid black;"-->
+                                    <td colspan="2">
+                                        <span>HOLD -
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span t-esc="doc.hold_amount_add"/>
+                                    </td>
+                                </tr>
+                                <tr height="20">
+                                    <!--style="border-right: 2px solid black;border-bottom: 2px solid black;border-left: 2px solid black;"-->
+                                    <td>
+                                        <span>OTHERS -</span>
+                                    </td>
+                                    <td>
+                                        <span t-esc="doc.other_dec"/>
+                                    </td>
+                                </tr>
+                                <tr height="20">
+                                    <!--style="border-right: 2px solid black;border-bottom: 2px solid black;border-left: 2px solid black;"-->
+                                    <td>
+                                        <strong>PAYABLE (AED)</strong>
+                                    </td>
+                                    <td>
+
+                                        <span t-esc="round(wage + (doc.non_absent_hour + doc.operator_absent_hour+doc.hold_amount_add+ doc.allotted_bonus + doc.other_bonus) - (doc.safety_fines + doc.sal_adv + doc.hold_amount_ded + doc.other_dec),2)"/>
+
+
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <record id="report_helper_payslip_pdf" model="ir.actions.report">
+        <field name="name">Helper Payslip</field>
+        <field name="model">hr.payslip</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">hr_edit.report_helper_payslip</field>
+        <field name="report_file">hr_edit.report_helper_payslip</field>
+        <field name="binding_model_id" ref="hr_payroll.model_hr_payslip"/>
+        <field name="binding_type">report</field>
+        <field name="paperformat_id" ref="paperformat_helper_report"/>
+
+    </record>
+
+</odoo>

@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_view_form" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.allocation</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="calendar.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form/app[@name='calendar']" position="inside">
+
+                <block title="Allocation Period" name="allocation_period">
+                    <setting string="Annual Leave" id="annual_setting">
+                        <div>
+                            <span>Calculation of days
+                                <field name="allocation_period"/>/per month
+                            </span>
+                        </div>
+                        <div>
+                            <span>After Complete(staff-foreman and Labor-A)
+                                <field name="complete_staff_foreman_period"/>/Year
+                            </span>
+                        </div>
+                        <div>
+                            <span>Allocation For staff-foreman and Labor-A
+                                <field name="first_period_staff_foreman"/>/Days
+                            </span>
+                        </div>
+                        <div>
+                            <span>After Complete(Labor-N)
+                                <field name="complete_labor_n_period"/>/Years
+                            </span>
+                        </div>
+
+                        <div>
+                            <span>Allocation For Labor-N
+                                <field name="first_period_labor_n"/>/Days
+                            </span>
+                        </div>
+
+                        <!--                        <div>-->
+                        <!--                            <span>Carry Over()-->
+                        <!--                                <field name="limit_number_of_day_staff_foreman"/>/Days-->
+                        <!--                            </span>-->
+                        <!--                        </div>-->
+
+                        <div>
+                            <span>Carry Over
+                                <field name="allocation_max"/>/Days
+                            </span>
+                        </div>
+
+
+                    </setting>
+
+                </block>
+
+            </xpath>
+        </field>
+    </record>
+    <!-- ////////////////////////////// -->
+    <record id="res_config_settings_view_transfer_form" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.transfer</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="hr.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="inside">
+                <app data-string="Transfer" string="Transfer" name="employee_transfer">
+                    <block title="Transfer">
+                        <setting string="Period For Lock Data">
+
+                            <div class="mt8">
+                                <div class="content-group">
+                                    <field name="lock_data_after" class="text-center w-10"
+                                           style="width: 40%; min-width: 4rem;padding-right: 10px;"/>/Days
+                                    <label for="lock_data_after"
+                                           string=" The date in transfer will be locked after this period from the transfer date."
+                                           class="o_light_label"/>
+                                </div>
+                                <!-- <div class="content-group">
+                                    <field name="ceo_assistant" class="text-center"
+                                           style="width: 40%; min-width: 4rem;padding-right: 10px;"/>
+                                    <label for="ceo_assistant" string=" CEO Assistant"
+                                           class="o_light_label"/>
+
+                                </div> -->
+                            </div>
+
+                        </setting>
+
+                    </block>
+                    <block title="Production">
+                        <setting string="Period For Lock Data in Production">
+
+                            <div class="mt8">
+                                <div class="content-group">
+                                    <field name="lock_pro_after" class="text-center w-10"
+                                           style="width: 40%; min-width: 4rem;padding-right: 10px;"/>/Days
+                                    <label for="lock_pro_after"
+                                           string=" The date in production will be locked after this period from the transfer date."
+                                           class="o_light_label"/>
+                                </div>
+                                <!-- <div class="content-group">
+                                    <field name="ceo_assistant" class="text-center"
+                                           style="width: 40%; min-width: 4rem;padding-right: 10px;"/>
+                                    <label for="ceo_assistant" string=" CEO Assistant"
+                                           class="o_light_label"/>
+
+                                </div> -->
+                            </div>
+
+                        </setting>
+                        <setting string="Dedction Leave">
+
+                            <div class="mt8">
+                                <div class="content-group">
+                                    <field name="two_day_ded_mason" class="text-center w-10"
+                                           style="width: 40%; min-width: 4rem;padding-right: 10px;"/>/Hours
+                                    <label for="two_day_ded_mason"
+                                           string=" Number of hours discounted in case of absence 2D"
+                                           class="o_light_label"/>
+                                </div>
+
+                            </div>
+
+                        </setting>
+
+                    </block>
+
+                </app>
+            </xpath>
+        </field>
+    </record>
+    <record id="transfer_config_settings_action" model="ir.actions.act_window">
+        <field name="name">Settings</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">res.config.settings</field>
+        <field name="view_mode">form</field>
+        <field name="target">inline</field>
+        <field name="context">{'module' : 'employee_transfer', 'bin_size': False}</field>
+    </record>
+    <menuitem
+            id="res_config_menu_transfer"
+            name="Configuration"
+            parent="hr_edit.employee_transfer_menu_open_transfer"
+            sequence="100"/>
+
+    <menuitem id="res_setting_menu_transfer"
+              name="Settings"
+              parent="hr_edit.res_config_menu_transfer"
+              sequence="1"
+              action="transfer_config_settings_action"
+              groups="base.group_system"
+    />
+    <record id="res_config_settings_view_payroll_form_data" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.payroll</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="hr_payroll.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//block[@id='hr_payroll_localization']" position="after">
+                <div class="row mt16 o_settings_container"
+                     id="hr_payroll_data">
+                    <div class="col-lg-6 col-12 o_setting_box">
+                        <div class="o_setting_right_pane">
+                            <span>Non-absence bonus
+                                <field name="non_absence_bonus"/>/AED
+                            </span>
+
+
+                        </div>
+                        <div>
+                            <span>At least
+                                <field name="least1"/>
+                                of the days worked as to receive
+                                <field name="operator_bonus"/>/AED
+
+                            </span>
+                            <span>At least
+                                <field name="least2"/>
+                                of the days worked as operator to receive
+                                <field name="receive_some"/>/AED
+
+                            </span>
+                            <span>At least
+                                <field name="least3"/>
+                                of the days worked as operator to receive
+                                <field name="receive_less"/>/AED
+
+                            </span>
+                        </div>
+                    </div>
+
+
+                </div>
+            </xpath>
+            <xpath expr="//block[@id='hr_payroll_settings']" position="after">
+                <block title="Overtime Rate" id="hr_over_time">
+                    <setting string="Rate for all types of overtime" id="rate_type"
+                             title="Rate for all types of overtime">
+                        <div class="row">
+                            <div class="col-6">
+                                <label for="aac_sob_hour"
+                                       class="col-md-6"/>
+                                <field name="aac_sob_hour" class="col-lg-6"/>
+                                <label for="hollow_hour"
+                                       class="col-md-6"/>
+                                <field name="hollow_hour" class="col-lg-6"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <label for="layout_hour"
+                                       class="col-md-6"/>
+                                <field name="layout_hour" class="col-lg-6"/>
+                                <label for="external_plaster_hour"
+                                       class="col-md-6"/>
+                                <field name="external_plaster_hour" class="col-lg-6"/>
+                            </div>
+                        </div>
+                       
+                     
+                        <div class="row">
+                            <div class="col-6">
+                                <label for="internal_angles_hour"
+                                       class="col-md-6"/>
+                                <field name="internal_angles_hour" class="col-lg-6"/>
+                                <label for="external_angles_hour"
+                                       class="col-md-6"/>
+                                <field name="external_angles_hour" class="col-lg-6"/>
+                            </div>
+                        </div>
+
+
+                    </setting>
+
+                     <setting id="rate_type_1" >
+                        <div class="row">
+                            <div class="col-6">
+                                <label for="point_hour"
+                                       class="col-md-6"/>
+                                <field name="point_hour" class="col-lg-6"/>
+                                <label for="point_s"
+                                       class="col-md-6"/>
+                                <field name="point_s" class="col-lg-6"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <label for="point_external"
+                                       class="col-md-6"/>
+                                <field name="point_external" class="col-lg-6"/>
+                                <label for="floor_tiles"
+                                       class="col-md-6"/>
+                                <field name="floor_tiles" class="col-lg-6"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <label for="parquet_tiles"
+                                       class="col-md-6"/>
+                                <field name="parquet_tiles" class="col-lg-6"/>
+                                <label for="wall_tiles"
+                                       class="col-md-6"/>
+                                <field name="wall_tiles" class="col-lg-6"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <label for="mosaic"
+                                       class="col-md-6"/>
+                                <field name="mosaic" class="col-lg-6"/>
+                                <label for="layout_tiles"
+                                       class="col-md-6"/>
+                                <field name="layout_tiles" class="col-lg-6"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <label for="skirting"
+                                       class="col-md-6"/>
+                                <field name="skirting" class="col-lg-6"/>
+                                <label for="hours_m"
+                                       class="col-md-6"/>
+                                <field name="hours_m" class="col-lg-6"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <label for="hours_h"
+                                       class="col-md-6"/>
+                                <field name="hours_h" class="col-lg-6"/>
+                                <label for="hours_o"
+                                       class="col-md-6"/>
+                                <field name="hours_o" class="col-lg-6"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <label for="rush_coat"
+                                       class="col-md-6"/>
+                                <field name="rush_coat" class="col-lg-6"/>
+                                <label for="external_rush"
+                                       class="col-md-6"/>
+                                <field name="external_rush" class="col-lg-6"/>
+                            </div>
+                        </div>
+
+
+                    </setting>
+                </block>
+            </xpath>
+
+        </field>
+    </record>
+
+
+</odoo>

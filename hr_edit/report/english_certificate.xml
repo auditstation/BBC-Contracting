@@ -1,0 +1,94 @@
+<odoo>
+<template id="employee_certificate_report">
+  <t t-call="web.basic_layout">
+        <t t-foreach="docs" t-as="doc">
+         
+          <div class="page" t-attf-style="background-image:url({{'/hr_edit/static/src/img/dubai_re.jpg' if doc.branch == 'dubai' or doc.on_company_sponsorship == 'no'  else '/hr_edit/static/src/img/sharjah.jpg'}}); background-size:210mm 320mm; width:210mm; height:320mm; background-repeat:no-repeat;">
+      <div style="text-align:left; font-size:16px; margin-left:30px;">
+        <br></br>
+                    <br></br>
+                    <br></br>
+                    <br></br>
+                    <br></br>
+                    <br></br>
+                    <br></br>
+                    <br></br>
+                     <br></br>
+          <br></br>
+                    <br></br>
+                     <br></br>
+                      
+                    
+            
+           
+                    Date: <span t-esc="datetime.datetime.now().strftime('%Y-%m-%d')"/>
+                </div>
+                <div style="text-align:left; font-size:16px; margin-left:30px;">
+                    <strong >To:</strong>
+                </div>
+                <div style="margin-top:20px; text-align:center; font-size:20px;">
+                    <u>Subject: </u> <u>To Whom It May Concern</u>
+                </div>
+                 <div style="text-align:left; margin-top:20px; font-size:14px; margin-left:15px;">
+                    <span style="text-align:left; margin-top:20px; font-size:14px; margin-left:15px;">Dear Sir:</span>
+                </div>
+
+                <div style="margin-top:20px; font-family:Georgia,serif; font-size:16px; margin-left:15px;">
+                    <p style="margin-top:20px; font-family:Georgia,serif; font-size:16px; margin-left:15px;">
+                        We hereby certify that Mr. <t t-esc="doc.name"/>, holder of Emirates ID No.(<t t-esc="doc.eid_no"/>) has been employed as a <t t-esc="doc.job_title_visa"/>
+                        at  <strong>  <t t-if="doc.branch == 'dubai' or doc.on_company_sponsorship == 'no'">
+                        BBC BUILDING CONTRACTING </t><t t-if="doc.branch == 'sharjah'">B.B.C BLDG. CONT SOLE PROPRIETORSHIP L.L.C </t> since <strong t-esc="doc.joining_date_first"/>.</strong>
+                      <t t-if="doc.contract_ids">
+                        He is currently receiving a monthly salary of AED  <t t-esc="doc.contract_ids[-1].contract_salary"/> inclusive of all fixed allowances.</t>
+                    </p>
+
+                <t t-if="doc.contract_ids">
+                <div style="margin-top:20px; font-size:16px; text-align:center;">
+                   <strong>Total </strong> <strong> AED <t t-esc="doc.contract_ids[-1].contract_salary"/> per month</strong>
+                </div></t>
+
+                <div style="margin-top:35px; font-family:Georgia,serif; font-size:16px; margin-left:15px;">
+                    <u><h4>Important Notes:</h4></u>
+                    <ol>
+                        <li>This certificate is being issued to Mr. <strong t-esc="doc.name"/> at his request without any liability to the company or any of its representatives and/or employees.</li>
+                        <li>The validity of this certificate period of one (1) month from the issuance date printed herein</li>
+                        <li>This certificate is not valid without original company stamp and original signature by an authorized signatory</li>
+                    </ol>
+                    <br/>
+                     <p>Regards,</p>
+                </div>
+
+                
+
+                <div style="margin-top:30px; margin-left:30px;">
+                    <p>Ehab Al Nemer</p>
+                    <p>Managing Director</p>
+                    <t t-if="doc.branch == 'dubai' or doc.on_company_sponsorship == 'no'">
+                    <p>For: BBC BUILDING CONTRACTING(DUBAI BRANCH)</p>
+                </t>
+                  <t t-elif="doc.branch == 'sharjah'">
+                    <p>For: BBC BLDG. CONT .SOLE PROPRIETORSHIP L.L.C</p>
+                </t>
+                </div>
+                </div>
+            </div>
+              
+           
+        </t>
+
+
+        </t>
+   </template>
+ <record id="report_english_certificate" model="ir.actions.report">
+        <field name="name">English Salary Certificate</field>
+        <field name="model">hr.employee</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">hr_edit.employee_certificate_report</field>
+        <field name="report_file">hr_edit.employee_certificate_report</field>
+        <field name="binding_model_id" ref="model_hr_employee"/>
+        <field name="binding_type">report</field>
+
+    </record>
+
+</odoo>
+

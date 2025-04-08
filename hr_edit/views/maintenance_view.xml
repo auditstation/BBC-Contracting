@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <menuitem
+            id="menu_maintenance_title"
+            name="Maintenance"
+            web_icon="maintenance,static/description/icon.png"
+            sequence="160"
+            groups="base.group_no_one"/>
+
+    <menuitem
+            id="maintenance.menu_equipment_form"
+            name="Equipment"
+            parent="hr.menu_hr_employee_payroll"
+            groups="maintenance.group_equipment_manager,base.group_user,hr.group_hr_manager"
+            sequence="10"/>
+    <record id="maintenance_equipment_view_form_inherit" model="ir.ui.view">
+        <field name="name">maintenance.equipment.view.form.inherit</field>
+        <field name="model">maintenance.equipment</field>
+        <field name="inherit_id" ref="maintenance.hr_equipment_view_form"/>
+        <field name="arch" type="xml">
+<!--             <xpath expr="//button[@name='974']" position="attributes">
+                <attribute name="invisible">True</attribute>
+            </xpath> -->
+            <xpath expr="//field[@name='assign_date']" position="after">
+                <field name="dismissed_date" readonly="1"/>
+            </xpath>
+            <xpath expr="//field[@name='assign_date']" position="attributes">
+                <attribute name="groups"/>
+            </xpath>
+            <xpath expr="//field[@name='location']" position="after">
+                <div class="o_row">Used(Months)<field name="used_period" readonly="1"/></div> 
+            </xpath>
+            <xpath expr="//field[@name='location']" position="attributes">
+                <attribute name="invisible">True</attribute>
+            </xpath>
+            <xpath expr="//page[@name='maintenance']" position="attributes">
+                <attribute name="invisible">True</attribute>
+            </xpath>
+            <xpath expr="//field[@name='scrap_date']" position="attributes">
+    <attribute name="invisible">True</attribute>
+  </xpath>
+            <xpath expr="//field[@name='serial_no']" position="attributes">
+                <attribute name="string">Asset NO.</attribute>
+            </xpath>
+            <xpath expr="//field[@name='warranty_date']" position="attributes">
+                <attribute name="invisible">True</attribute>
+            </xpath>
+            <xpath expr="//form[1]/sheet[1]" position="before">
+                <header>
+                    <field widget="statusbar" options="{'clickable': '1'}"
+                           name="state"/>
+
+                </header>
+            </xpath>
+        </field>
+    </record>
+    <record id="maintenance_equipment_view_tree_inherit" model="ir.ui.view">
+        <field name="name">maintenance.equipment.view.tree.inherit</field>
+        <field name="model">maintenance.equipment</field>
+        <field name="inherit_id" ref="maintenance.hr_equipment_view_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='assign_date']" position="after">
+                <field name="dismissed_date" optional="show"/>
+                <field name="used_period" optional="show"/>
+            </xpath>
+            <xpath expr="//field[@name='technician_user_id']" position="attributes">
+                <attribute name="optional">hide</attribute>
+            </xpath>
+            <xpath expr="//field[@name='department_id']" position="attributes">
+                <attribute name="optional">hide</attribute>
+            </xpath>
+            <xpath expr="//field[@name='category_id']" position="after">
+                <field name="state" optional="show" widget="badge"
+                       decoration-muted="state == 'dismissed'"
+                       decoration-success="state == 'active'"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

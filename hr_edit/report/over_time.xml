@@ -1,0 +1,144 @@
+<odoo>
+    <template id="report_cash_payment_voucher">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <div class="page" style="page-break-after: always;">
+                    <table style="width: 100%; border: 2px solid black; border-collapse: collapse;">
+                        <tr>
+                            <td colspan="4" style="border: 2px solid black; padding: 5px;">
+                                <t t-if="doc.employee_id.branch == 'dubai' or doc.employee_id.on_company_sponsorship == 'no'">
+                                    <h2 style="text-align: center;">BBC BUILDING CONTRACTING LLC</h2>
+                                    <p style="text-align: center;">TEL: 04 2543557 FAX: 04 2540545, PO BOX: 97011 DUBAI,
+                                        U.A.E
+                                    </p>
+
+                                </t>
+                                <t t-elif="doc.employee_id.branch == 'sharjah' and doc.employee_id.on_company_sponsorship == 'no'">
+                                    <h2 style="text-align: center;">BBC BLDG. CONT .SOLE PROPRIETORSHIP L.L.C</h2>
+                                </t>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="4" style="border: 2px solid black; padding: 5px;">
+                                <h3 style="text-align: center; text-decoration: underline;">CASH PAYMENT VOUCHER</h3>
+                            </td>
+                        </tr>
+
+
+                        <tr>
+
+                            <td colspan="4" style="text-align:right; border: 2px solid black; padding: 5px;">DATE:
+                            <span t-esc="datetime.datetime.now().strftime('%Y-%m-%d')"/>
+                            <br></br>REF NO:____________<span></span>
+                            </td>
+                        </tr>
+                   
+
+                    <tr>
+                        <td style="border: 2px solid black; padding: 5px;">EMPLOYEE CODE</td>
+                        <td style="border: 2px solid black; padding: 5px;" t-esc="doc.employee_id.job_code"/>
+                        <td style="border: 2px solid black; padding: 5px;">Visa:</td>
+                        <td style="border: 2px solid black; padding: 5px;">
+                            <span t-esc="doc.employee_id.branch"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="border: 2px solid black; padding: 5px;">EMPLOYEE NAME</td>
+                        <td colspan="3" style="border: 2px solid black; padding: 5px;" t-esc="doc.employee_id.name"/>
+                    </tr>
+                    <tr>
+                        <td style="border: 2px solid black; padding: 5px;">DESIGNATION</td>
+                        <td style="border: 2px solid black; padding: 5px;" t-esc="doc.designation.name"/>
+                        <td style="border: 2px solid black; padding: 5px;">MOL:</td>
+                        <td style="border: 2px solid black; padding: 5px;">
+                            <span t-esc="doc.employee_id.mol_no"/>
+                        </td>
+
+                    </tr>
+
+                    <tr>
+
+                        <td style="border: 2px solid black; padding: 5px;">NATIONALITY</td>
+                        <td colspan="3" style="border: 2px solid black; padding: 5px;">
+                            <span t-esc="doc.employee_id.country_id.name"/>
+                        </td>
+                    </tr>
+
+
+                    <tr>
+                        <td colspan="4" style="border: 2px solid black; padding: 5px;">
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td style="border: 2px solid black; font-weight: bold; padding: 5px;">DETAILS</td>
+                        <td style="border: 2px solid black; font-weight: bold; padding: 5px;">DATE</td>
+                        <td style="border: 2px solid black; font-weight: bold; padding: 5px;">SITE</td>
+                        <td style="border: 2px solid black; font-weight: bold; padding: 5px;">AMOUNT(AED)</td>
+                    </tr>
+
+
+                    <tr>
+                        <td style="border: 2px solid black; padding: 5px;">SALARY</td>
+                        <td style="border: 2px solid black; padding: 5px;" t-esc="doc.date"/>
+                        <td style="border: 2px solid black; padding: 5px;"> <span><t t-esc="doc.work_id.name"/></span></td>
+                        <td style="border: 2px solid black; padding: 5px;" t-esc="doc.total"/>
+
+                    </tr>
+                        <tr>
+                            <td colspan="4" style="border: 2px solid black; padding: 5px;">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="4" style="text-align:right; border: 2px solid black; height:150px; padding: 5px;">
+                                <p>Employee's Signature: _________________________</p>
+                                <p>Date: _________________________</p>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td style="border: 2px solid black; padding: 5px;">Prepared By</td>
+                            <td style="border: 2px solid black; padding: 5px;">Checked By</td>
+                            <td colspan="2" style="border: 2px solid black; padding: 5px;">Approved By</td>
+                        </tr>
+                        <tr>
+                            <td style="border: 2px solid black; height:40px; padding: 5px;"/>
+                            <td style="border: 2px solid black; height:40px; padding: 5px;"/>
+                            <td colspan="2" style="border: 2px solid black; height:20px; padding: 5px;"/>
+                        </tr>
+                        <tr>
+                            <td colspan="4" style="text-align:left; height:40px; border: 2px solid black; padding: 5px;">
+
+                                <p>Remarks: _________________________</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="4" style="text-align:center; height:40px; border: 2px solid black; padding: 5px;">
+
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="4" style="text-align:center;  height:40px; border: 2px solid black; padding: 5px;">
+
+
+                            </td>
+                        </tr>
+                    </table>
+
+                </div>
+            </t>
+            
+        </t>
+    </template>
+    <record id="report_overtime" model="ir.actions.report">
+        <field name="name">CASH PAYMENT VOUCHER</field>
+        <field name="model">over.time</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">hr_edit.report_cash_payment_voucher</field>
+        <field name="report_file">hr_edit.report_cash_payment_voucher</field>
+        <field name="binding_model_id" ref="model_over_time"/>
+        <field name="binding_type">report</field>
+
+    </record>
+</odoo>

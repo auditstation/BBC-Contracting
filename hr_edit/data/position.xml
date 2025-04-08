@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="prep" model="hr.job">
+            <field name="name">PREPARATION MASON</field>
+            <field name="lock">True</field>
+        </record>
+         <record id="plaster" model="hr.job">
+            <field name="name">PLASTER MASON</field>
+            <field name="lock">True</field>
+        </record>
+         <record id="operation" model="hr.job">
+            <field name="name">OPERATOR</field>
+            <field name="lock">True</field>
+        </record>
+         <record id="rush" model="hr.job">
+            <field name="name">RUSH COAT</field>
+            <field name="lock">True</field>
+        </record>
+         <record id="block" model="hr.job">
+            <field name="name">BLOCK MASON</field>
+            <field name="lock">True</field>
+        </record>
+         <record id="helper" model="hr.job">
+            <field name="name">HELPER</field>
+            <field name="lock">True</field>
+        </record>
+         <record id="tile_m" model="hr.job">
+            <field name="name">TILE MASON</field>
+            <field name="lock">True</field>
+        </record>
+         <record id="tile_h" model="hr.job">
+            <field name="name">TILE HELPER</field>
+            <field name="lock">True</field>
+        </record>
+        <record id="foreman" model="hr.job">
+            <field name="name">FOREMAN</field>
+            <field name="lock">True</field>
+        </record>
+         <record id="area_manager" model="hr.job">
+            <field name="name">AREA MANAGER</field>
+            <field name="lock">True</field>
+        </record>
+         <record id="quantity_surveyor" model="hr.job">
+            <field name="name">QUANTITY SURVEYOR</field>
+            <field name="lock">True</field>
+        </record>
+         <record id="civil_engineer" model="hr.job">
+            <field name="name">CIVIL ENGINEER</field>
+            <field name="lock">True</field>
+        </record>
+
+
+    </data>
+</odoo>

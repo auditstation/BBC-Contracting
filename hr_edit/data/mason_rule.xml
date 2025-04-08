@@ -1,0 +1,404 @@
+<odoo>
+    <data noupdate="0">
+        <record id="mason_structure_bbc" model="hr.payroll.structure">
+            <field name="name">Mason</field>
+            <field name="type_id" ref="hr_contract.structure_type_employee"/>
+            <field name="country_id" eval="False"/>
+            <field name="active">True</field>
+        </record>
+        <!--                        RULE                                        -->
+
+        <!--        wall_tiles mason  -->
+        <record id="hr_rule_wall_tiles_mason" model="hr.salary.rule">
+            <field name="name">Wall Tiles</field>
+            <field name="sequence" eval="1"/>
+            <field name="code">MWT</field>
+            <field name="category_id" ref="hr_payroll.BASIC"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = (payslip.wall_tiles * contract.wall_tiles)
+            </field>
+            <field name="struct_id" ref="hr_edit.mason_structure_bbc"/>
+        </record>
+        <!--        parquet_tiles mason  -->
+        <record id="hr_rule_parquet_tiles_mason" model="hr.salary.rule">
+            <field name="name">Parquet Tiles</field>
+            <field name="sequence" eval="2"/>
+            <field name="code">MPT</field>
+            <field name="category_id" ref="hr_payroll.BASIC"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = (payslip.parquet_tiles * contract.parquet_tiles)
+            </field>
+            <field name="struct_id" ref="hr_edit.mason_structure_bbc"/>
+        </record>
+        <!--        floor_tiles mason  -->
+        <record id="hr_rule_floor_tiles_mason" model="hr.salary.rule">
+            <field name="name">Floor Tiles</field>
+            <field name="sequence" eval="3"/>
+            <field name="code">MFT</field>
+            <field name="category_id" ref="hr_payroll.BASIC"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = (payslip.floor_tiles * contract.floor_tiles)
+            </field>
+            <field name="struct_id" ref="hr_edit.mason_structure_bbc"/>
+        </record>
+        <!--        skirting mason  -->
+        <record id="hr_rule_skirting_mason" model="hr.salary.rule">
+            <field name="name">Skirtings</field>
+            <field name="sequence" eval="4"/>
+            <field name="code">MS</field>
+            <field name="category_id" ref="hr_payroll.BASIC"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = (payslip.skirting * contract.skirting)
+            </field>
+            <field name="struct_id" ref="hr_edit.mason_structure_bbc"/>
+        </record>
+        <!--        layout_tiles mason  -->
+        <record id="hr_rule_layout_tiles_mason" model="hr.salary.rule">
+            <field name="name">Layout Tiles</field>
+            <field name="sequence" eval="5"/>
+            <field name="code">MLT</field>
+            <field name="category_id" ref="hr_payroll.BASIC"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = (payslip.layout_tiles * contract.layout_tiles)
+            </field>
+            <field name="struct_id" ref="hr_edit.mason_structure_bbc"/>
+        </record>
+        <!--        threshold mason  -->
+        <record id="hr_rule_threshold_mason" model="hr.salary.rule">
+            <field name="name">Threshold</field>
+            <field name="sequence" eval="6"/>
+            <field name="code">MT</field>
+            <field name="category_id" ref="hr_payroll.BASIC"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = (payslip.threshold * contract.threshold)
+            </field>
+            <field name="struct_id" ref="hr_edit.mason_structure_bbc"/>
+        </record>
+        <!--        point_hour mason  -->
+
+        <record id="hr_rule_point_hour_mason" model="hr.salary.rule">
+            <field name="name">Point Hour</field>
+            <field name="sequence" eval="7"/>
+            <field name="code">MPH</field>
+            <field name="category_id" ref="hr_payroll.BASIC"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = (payslip.point_hour * contract.point_hour)
+            </field>
+            <field name="struct_id" ref="hr_edit.mason_structure_bbc"/>
+        </record>
+
+        <!--        external_plaster_hour mason  -->
+        <record id="hr_rule_external_plaster_hour_mason" model="hr.salary.rule">
+            <field name="name">External Plaster Hour</field>
+            <field name="sequence" eval="8"/>
+            <field name="code">MEPH</field>
+            <field name="category_id" ref="hr_payroll.BASIC"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = (payslip.external_plaster_hour * contract.external_plaster)
+            </field>
+            <field name="struct_id" ref="hr_edit.mason_structure_bbc"/>
+        </record>
+        <!--        internal_plaster_hour mason  -->
+        <record id="hr_rule_internal_plaster_hour_mason" model="hr.salary.rule">
+            <field name="name">Internal Plaster Hour</field>
+            <field name="sequence" eval="9"/>
+            <field name="code">MIPH</field>
+            <field name="category_id" ref="hr_payroll.BASIC"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = (payslip.internal_plaster_hour * contract.internal_plaster)
+            </field>
+            <field name="struct_id" ref="hr_edit.mason_structure_bbc"/>
+        </record>
+        <!--        internal_angles_hour mason  -->
+        <record id="hr_rule_internal_angles_hour_mason" model="hr.salary.rule">
+            <field name="name">Internal Angles Hour</field>
+            <field name="sequence" eval="10"/>
+            <field name="code">MIAH</field>
+            <field name="category_id" ref="hr_payroll.BASIC"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = (payslip.internal_angles_hour * contract.internal_angles)
+            </field>
+            <field name="struct_id" ref="hr_edit.mason_structure_bbc"/>
+        </record>
+        <!--        external_angles_hour mason  -->
+        <record id="hr_rule_external_angles_hour_mason" model="hr.salary.rule">
+            <field name="name">External Angles Hour</field>
+            <field name="sequence" eval="11"/>
+            <field name="code">MEAH</field>
+            <field name="category_id" ref="hr_payroll.BASIC"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = (payslip.external_angles_hour * contract.external_angles)
+            </field>
+            <field name="struct_id" ref="hr_edit.mason_structure_bbc"/>
+        </record>
+        <!--        hollow_hour mason  -->
+        <record id="hr_rule_hollow_hour_mason" model="hr.salary.rule">
+            <field name="name">Hollow Hour</field>
+            <field name="sequence" eval="12"/>
+            <field name="code">MHH</field>
+            <field name="category_id" ref="hr_payroll.BASIC"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = (payslip.hollow_hour * contract.hollow_block)
+            </field>
+            <field name="struct_id" ref="hr_edit.mason_structure_bbc"/>
+        </record>
+        <!--        aac_sob_hour mason  -->
+        <record id="hr_rule_aac_sob_hour_mason" model="hr.salary.rule">
+            <field name="name">AAC/SOB Block</field>
+            <field name="sequence" eval="12"/>
+            <field name="code">MAAC</field>
+            <field name="category_id" ref="hr_payroll.BASIC"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = (payslip.aac_sob_hour * contract.acc_block)
+            </field>
+            <field name="struct_id" ref="hr_edit.mason_structure_bbc"/>
+        </record>
+        <!--       helper & mason  Hour-->
+        <record id="hr_rule_helper_and_mason_hour" model="hr.salary.rule">
+            <field name="name">Hours</field>
+            <field name="sequence" eval="13"/>
+            <field name="code">MHMH</field>
+            <field name="category_id" ref="hr_payroll.BASIC"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = (payslip.helper_hour * contract.hourly_wage)</field>
+            <field name="struct_id" ref="hr_edit.mason_structure_bbc"/>
+        </record>
+        <!--       point_s mason-->
+        <record id="hr_rule_point_s_mason" model="hr.salary.rule">
+            <field name="name">Point S</field>
+            <field name="sequence" eval="14"/>
+            <field name="code">MPS</field>
+            <field name="category_id" ref="hr_payroll.BASIC"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = (payslip.point_s * contract.point_s)
+            </field>
+            <field name="struct_id" ref="hr_edit.mason_structure_bbc"/>
+        </record>
+        <!--       point_external mason-->
+        <record id="hr_rule_point_external_mason" model="hr.salary.rule">
+            <field name="name">Point External</field>
+            <field name="sequence" eval="15"/>
+            <field name="code">MPE</field>
+            <field name="category_id" ref="hr_payroll.BASIC"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = (payslip.point_external * contract.point_external)
+            </field>
+            <field name="struct_id" ref="hr_edit.mason_structure_bbc"/>
+        </record>
+        <!--       OTHER Bouns mason-->
+        <record id="hr_rule_other_add_mason" model="hr.salary.rule">
+            <field name="name">OTHER Bouns Mason</field>
+            <field name="sequence" eval="16"/>
+            <field name="code">OTHERBM</field>
+            <field name="category_id" ref="hr_payroll.ALW"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = payslip.other_bonus if payslip.other_bonus else 0</field>
+            <field name="struct_id" ref="hr_edit.mason_structure_bbc"/>
+        </record>
+        <!--       OTHER Deduction mason-->
+        <record id="hr_rule_other_ded_mason" model="hr.salary.rule">
+            <field name="name">OTHER DED Mason</field>
+            <field name="sequence" eval="17"/>
+            <field name="code">OTHERDM</field>
+            <field name="category_id" ref="hr_payroll.DED"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = payslip.other_dec if payslip.other_dec else 0</field>
+            <field name="struct_id" ref="hr_edit.mason_structure_bbc"/>
+        </record>
+        <!--       safety_fines mason-->
+        <record id="hr_rule_safety_fines_mason" model="hr.salary.rule">
+            <field name="name">Safety Mason</field>
+            <field name="sequence" eval="18"/>
+            <field name="code">SDM</field>
+            <field name="category_id" ref="hr_payroll.DED"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = payslip.safety_fines if payslip.safety_fines else 0</field>
+            <field name="struct_id" ref="hr_edit.mason_structure_bbc"/>
+        </record>
+                <!--     salary advance   -->
+        <record id="hr_rule_salary_mason" model="hr.salary.rule">
+            <field name="name">Salary Advance</field>
+            <field name="sequence" eval="8"/>
+            <field name="code">salm</field>
+            <field name="category_id" ref="hr_payroll.DED"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = payslip.sal_adv if payslip.sal_adv else 0</field>
+            <field name="struct_id" ref="hr_edit.mason_structure_bbc"/>
+        </record>
+        <!--       gas_ded mason-->
+        <record id="hr_rule_gas_ded_mason" model="hr.salary.rule">
+            <field name="name">GAS</field>
+            <field name="sequence" eval="19"/>
+            <field name="code">GAS</field>
+            <field name="category_id" ref="hr_payroll.DED"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = payslip.gas_ded if payslip.gas_ded else 0</field>
+            <field name="struct_id" ref="hr_edit.mason_structure_bbc"/>
+        </record>
+
+        <!--       absent mason-->
+        <record id="hr_rule_absent_ded_mason" model="hr.salary.rule">
+            <field name="name">Absent</field>
+            <field name="sequence" eval="20"/>
+            <field name="code">ABSENTM</field>
+            <field name="category_id" ref="hr_payroll.DED"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = payslip.two_day_ded_mason * contract.hourly_wage</field>
+            <field name="struct_id" ref="hr_edit.mason_structure_bbc"/>
+        </record>
+        <!--       hold_amount_ded mason-->
+        <record id="hr_rule_hold_amount_ded_mason" model="hr.salary.rule">
+            <field name="name">Hold -</field>
+            <field name="sequence" eval="21"/>
+            <field name="code">HOLDD</field>
+            <field name="category_id" ref="hr_payroll.DED"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = payslip.hold_amount_ded if payslip.hold_amount_ded else 0
+            </field>
+            <field name="struct_id" ref="hr_edit.mason_structure_bbc"/>
+        </record>
+
+<!--        &lt;!&ndash;       ticket_price mason&ndash;&gt;-->
+<!--        <record id="hr_rule_ticket_price_mason" model="hr.salary.rule">-->
+<!--            <field name="name">Ticket Price</field>-->
+<!--            <field name="sequence" eval="22"/>-->
+<!--            <field name="code">TICKET</field>-->
+<!--            <field name="category_id" ref="hr_payroll.DED"/>-->
+<!--            <field name="condition_select">none</field>-->
+<!--            <field name="amount_select">code</field>-->
+<!--            <field name="amount_python_compute">result = payslip.ticket_price if payslip.ticket_price else 0</field>-->
+<!--            <field name="struct_id" ref="hr_edit.mason_structure_bbc"/>-->
+<!--        </record>-->
+        <!--       hold_amount_add mason-->
+        <record id="hr_rule_hold_amount_add_mason" model="hr.salary.rule">
+            <field name="name">Hold +</field>
+            <field name="sequence" eval="23"/>
+            <field name="code">HOLDB</field>
+            <field name="category_id" ref="hr_payroll.ALW"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = payslip.hold_amount_add if payslip.hold_amount_add else 0
+            </field>
+            <field name="struct_id" ref="hr_edit.mason_structure_bbc"/>
+        </record>
+        <!--       rush_coat mason-->
+        <record id="hr_rule_rush_coat_mason" model="hr.salary.rule">
+            <field name="name">Rush Coat</field>
+            <field name="sequence" eval="24"/>
+            <field name="code">RUSH</field>
+            <field name="category_id" ref="hr_payroll.ALW"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = (payslip.rush_coat * contract.rush_coat)</field>
+            <field name="struct_id" ref="hr_edit.mason_structure_bbc"/>
+        </record>
+
+        <!--       mosaic mason-->
+        <record id="hr_rule_rush_mosaic" model="hr.salary.rule">
+            <field name="name">mosaic</field>
+            <field name="sequence" eval="24"/>
+            <field name="code">mosaic</field>
+            <field name="category_id" ref="hr_payroll.ALW"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = (payslip.mosaic * contract.mosaic)</field>
+            <field name="struct_id" ref="hr_edit.mason_structure_bbc"/>
+        </record>
+<!--        allottedbonus mason-->
+        <record id="hr_rule_allotted_bonus" model="hr.salary.rule">
+            <field name="name">allotted bonus</field>
+            <field name="sequence" eval="5"/>
+            <field name="code">allottedbonus</field>
+            <field name="category_id" ref="hr_payroll.ALW"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = payslip.allotted_bonus if payslip.allotted_bonus else 0</field>
+            <field name="struct_id" ref="hr_edit.mason_structure_bbc"/>
+        </record>
+<!--        plasterbonus mason-->
+        <record id="hr_rule_plaster_bonus" model="hr.salary.rule">
+            <field name="name">plaster bonus</field>
+            <field name="sequence" eval="5"/>
+            <field name="code">plasterbonus</field>
+            <field name="category_id" ref="hr_payroll.ALW"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = payslip.plaster_bonus if payslip.plaster_bonus else 0</field>
+            <field name="struct_id" ref="hr_edit.mason_structure_bbc"/>
+        </record>
+
+        <!--        layout_block mason  -->
+        <record id="hr_rule_layout_block_mason" model="hr.salary.rule">
+            <field name="name">Layout Block</field>
+            <field name="sequence" eval="25"/>
+            <field name="code">MLB</field>
+            <field name="category_id" ref="hr_payroll.BASIC"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = (payslip.layout_block * contract.layout_block)
+            </field>
+            <field name="struct_id" ref="hr_edit.mason_structure_bbc"/>
+        </record>
+        <record id="hr_rule_mason_hour_holiday" model="hr.salary.rule">
+            <field name="name">Hour public holiday</field>
+            <field name="sequence" eval="10"/>
+            <field name="code">publicholidaym</field>
+            <field name="category_id" ref="hr_payroll.ALW"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = payslip.hour_holiday * contract.hourly_wage if payslip.hour_holiday else 0</field>
+            <field name="struct_id" ref="hr_edit.mason_structure_bbc"/>
+        </record>
+        <!--       Wage  Mason-->
+        <record id="hr_rule_wage_mason" model="hr.salary.rule">
+            <field name="name">Wage</field>
+            <field name="sequence" eval="40"/>
+            <field name="code">MW</field>
+            <field name="category_id" ref="hr_payroll.BASIC"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = MWT + MPT + MFT + MS + MLT + MT + MPH + MEPH + MIPH + MIAH + MEAH + MHH + MAAC + MHMH + MLB + RUSH + MPS + MPE + mosaic
+            </field>
+            <field name="struct_id" ref="hr_edit.mason_structure_bbc"/>
+        </record>
+
+        <!--       Last Wage  Mason-->
+        <record id="hr_rule_total_mason" model="hr.salary.rule">
+            <field name="name">Total Mason</field>
+            <field name="sequence" eval="60"/>
+            <field name="code">NET</field>
+            <field name="category_id" ref="hr_payroll.BASIC"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = MW + (OTHERBM + publicholidaym + HOLDB + allottedbonus + plasterbonus) - (OTHERDM + SDM + salm  + ABSENTM  + HOLDD)
+            </field>
+            <field name="struct_id" ref="hr_edit.mason_structure_bbc"/>
+        </record>
+
+        
+
+    </data>
+</odoo>

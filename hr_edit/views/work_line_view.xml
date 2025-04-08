@@ -1,0 +1,129 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="view_work_search" model="ir.ui.view">
+        <field name="name">work</field>
+        <field name="model">work.location.line</field>
+        <field name="arch" type="xml">
+            <search string="project search">
+                <field name="work_location_id"/>
+                <field string="Employee name" name="production_ids"
+                       filter_domain="[('production_ids.employee_id.name', 'ilike', self)]"/>
+                <field string="Job Code" name="production_ids"
+                       filter_domain="[('production_ids.job_code', 'ilike', self)]"/>
+                <field string="Job Position" name="production_ids"
+                       filter_domain="[('production_ids.employee_id.job_id.name', 'ilike', self)]"/>
+                <group expand='0' string='Group by...'>
+                    <filter string='Location' name="group_by_location_id" context="{'group_by': 'work_location_id'}"/>
+                    <filter string='Date' name="group_by_created_date" context="{'group_by': 'start_date'}"/>
+
+                </group>
+            </search>
+        </field>
+    </record>
+    <record id="work_location_line_tree_view" model="ir.ui.view">
+        <field name="name">work.location.line.tree</field>
+        <field name="model">work.location.line</field>
+        <field name="arch" type="xml">
+            <tree name="Production by project">
+                <field name="work_location_id" optional="show"/>
+                <field name="start_date" optional="show"/>
+
+                <field name="production_ids" optional="hide"/>
+            </tree>
+        </field>
+    </record>
+    <record id="work_location_line_form_view" model="ir.ui.view">
+        <field name="name">work.location.line.form</field>
+        <field name="model">work.location.line</field>
+        <field name="arch" type="xml">
+            <form string="Production">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                    </div>
+                    <group>
+                        <field name="lock" invisible="1"/>
+                        <field name="start_date" readonly="lock == True" required="1"/>
+                        <field name="work_location_id" readonly="lock == True" required="1"/>
+
+                    </group>
+                    <group>
+                        <field name="category" readonly="lock == True" required="1"/>
+
+                    </group>
+
+                    <notebook>
+                        <page string="Workers" name="production_line">
+                            <field name="production_ids" readonly="lock == True"
+                                   options="{'no_open': True,'no_create': True}">
+                                <tree editable="bottom" create="0" no_open="1" class="header_custom">
+
+                                    <field name="employee_id" optional="show"/>
+                                    <field name="job_code" optional="show"/>
+
+                                    <field name="hours" optional="show" invisible="absence in ['1','2']"/>
+                                    
+                                    
+                                    <field name="rush_coat" invisible="absence in ['1','2'] or leave"
+                                    column_invisible="parent.category not in ['all','helper']" /> 
+                                    <field name="external_rush" invisible="absence in ['1','2'] or leave"
+                                    column_invisible="parent.category not in ['all','helper']" />
+                                    <field name="layout_hour" invisible="absence in ['1','2'] or leave"
+                                           column_invisible="parent.category not in ['all','block']"/>
+                                    <field name="hollow_hour" invisible="absence in ['1','2'] or leave"
+                                           column_invisible="parent.category not in ['all','block']"/>
+                                    <field name="aac_sob_hour" invisible="absence in ['1','2'] or leave"
+                                           column_invisible="parent.category not in ['all','block']"/>
+                                    <field name="external_plaster_hour" invisible="absence in ['1','2'] or leave"
+                                           column_invisible="parent.category not in ['all','plaster']"/>
+                                    <field name="internal_plaster_hour" invisible="absence in ['1','2'] or leave"
+                                           column_invisible="parent.category not in ['all','plaster']"/>
+                                    <field name="internal_angles_hour" invisible="absence in ['1','2'] or leave"
+                                           column_invisible="parent.category not in ['all','preparation']"/>
+                                    <field name="external_angles_hour" invisible="absence in ['1','2'] or leave"
+                                           column_invisible="parent.category not in ['all','preparation']"/>
+                                    <field name="point_hour" invisible="absence in ['1','2'] or leave"
+                                           column_invisible="parent.category not in ['all','preparation']"/>
+                                    <field name="point_s" invisible="absence in ['1','2'] or leave"
+                                           column_invisible="parent.category not in ['all','preparation']"/>
+                                    <field name="point_external" invisible="absence in ['1','2'] or leave"
+                                           column_invisible="parent.category not in ['all','preparation']"/>
+                                    
+                                    <field name="floor_tiles"  invisible="absence in ['1','2']" column_invisible="parent.category not in ['all','tile']"/>
+                                    <field name="parquet_tiles" invisible="absence in ['1','2'] or leave"
+                                           column_invisible="parent.category not in ['all','tile']"/>
+                                    <field invisible="absence in ['1','2'] or leave" name="wall_tiles" column_invisible="parent.category not in ['all','tile']"/>
+                                    <field invisible="absence in ['1','2'] or leave" name="mosaic" column_invisible="parent.category not in ['all','tile']"/>
+                                    <field invisible="absence in ['1','2'] or leave" name="hreshold" column_invisible="parent.category not in ['all','tile']"/>
+                                    <field invisible="absence in ['1','2']or leave" name="layout_tiles"
+                                           column_invisible="parent.category not in ['all','tile']"/>
+                                    <field invisible="absence in ['1','2']" name="skirting" column_invisible="parent.category not in ['all','tile']" />
+                                    <field name="absence" optional="show" invisible="aac_sob_hour > 0 or external_angles_hour > 0 or external_plaster_hour > 0 or floor_tiles > 0 or hollow_hour > 0 or hours > 0 or hreshold > 0 or layout_hour > 0 or layout_tiles > 0 or wall_tiles > 0 or mosaic > 0 or parquet_tiles > 0 or point_hour > 0" class="hd_custom"/>
+                                    <field name="reason" required="absence == '1'" optional="show" invisible="aac_sob_hour > 0 or external_angles_hour > 0 or external_plaster_hour > 0 or floor_tiles > 0 or hollow_hour > 0 or hours > 0 or hreshold > 0 or layout_hour > 0 or layout_tiles > 0 or wall_tiles > 0 or mosaic > 0 or parquet_tiles > 0 or point_hour > 0"/>
+                                    <field name="leave" optional="show"/>
+                                    <control>
+                                        <create name="add_line_control" string="" invisible="1"/>
+                                    </control>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+
+            </form>
+        </field>
+    </record>
+    <record id="employee_work_location_line_action" model="ir.actions.act_window">
+        <field name="name">Production by project</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">work.location.line</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_work_search"/>
+
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Create a new Work Location.
+            </p>
+        </field>
+    </record>
+
+</odoo>

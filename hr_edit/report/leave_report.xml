@@ -1,0 +1,238 @@
+<odoo>
+
+    <template id="leave_form_pdf_template">
+   <t t-call="web.basic_layout">
+            <t t-foreach="docs" t-as="doc">
+            <t t-set="h" t-value="doc.holiday_status_id.with_context({'lang':'ar_SY'}).name"/>
+           
+               
+                    <t t-set="lines" t-value="doc.employee_ids"/>
+                    
+                    <t t-foreach="lines" t-as="line">
+                      <t t-set="m" t-value="line.country_id.with_context({'lang':'ar_SY'}).name"/>
+                       <t t-set="j" t-value="line.with_context({'lang':'ar_SY'}).job_title_visa"/>
+                       
+                        <t>
+<div class="page" style="dislay: block;page-break-after: always;">
+                    <!-- LEAVE FORM Header -->
+                    <div style="padding: 40px; height:50px; text-align: center; font-size: 18px; font-weight: bold; border:1px solid black;">
+                        BBC BUILDING CONTRACTING
+                    </div>
+
+                    <div style="margin-top:20px; padding: 20px; height:30px; text-align: center; font-size: 16px; margin-bottom: 20px; border:1px solid black;">
+                        LEAVE FORM
+                    </div>
+
+
+                    <div class="row" style="display: flex; justify-content: space-between; margin-bottom: 20px;">
+                        <div class="col-6">
+                            <span>Date:</span>
+
+                            <span style="text-align: center; display: inline-block; width:40%; border:1px solid black;" t-esc="datetime.datetime.now().strftime('%Y-%m-%d')"/>
+
+                            <span>:التاريخ</span>
+                        </div>
+
+
+                        <div class="col-6">
+                            <strong>Job Code:</strong>
+                            <span style="text-align: center; height:30px; display: inline-block; width:35%; border:1px solid black;" t-field="line.job_code"/>
+                        </div>
+                    </div>
+
+                    <!-- Employee Information -->
+                    <div class="row mt-3">
+                        <div class="col-12">
+                            <strong>Full name:
+
+                                <span style="text-align: center; height:40px; padding:10px; display: inline-block;     width: 50%; border:1px solid black;" t-field="line.name"/>
+
+                            </strong>
+                        </div>
+                    </div>
+               
+                    <div class="row mt-3">
+                        <div class="col-12" style="text-align: right; direction: rtl;">
+                            <strong>الاسم الكامل:</strong>
+                            <span style="text-align: center; padding: 5px; display: inline-block; width: 50%; border:1px solid black;">
+                            <t t-esc="line.arabic_name"/>
+                            </span>
+                        </div>
+                    </div>
+                   
+
+                    <div class="row mt-3">
+                        <div class="col-6">
+                            <strong>Nationality:</strong>
+
+                            <span style="text-align: center; padding: 5px; height:75px; display: inline-block; width: 50%; border:1px solid black;">
+                           <t t-esc="line.country_id.name"/> 
+                            <br></br>
+                          
+                            <t t-out="m"/>
+
+</span> 
+   <span>:الجنسية</span>
+                        </div>
+
+                        <div class="col-6">
+
+                            <strong>Passport #:</strong>
+
+                               <span style="text-align: center; padding: 5px; height:75px; display: inline-block; width: 50%; border:1px solid black;" t-field="line.passport_id"/>
+
+                            <span>:رقم الجواز</span>
+                        </div>
+                    </div>
+                    <div class="row mt-3 ml-5">
+                    <div class="col-12">
+
+                        <strong>Job Title:</strong>
+
+                          <span style="text-align: center; padding: 5px; height:75px; display: inline-block; width: 50%; border:1px solid black;">
+                           <t t-esc="line.job_title_visa"/>
+                        <br></br>
+                       
+                        <t t-out="j"/>
+                        </span>
+                        <span>:المسمى الوظيفي</span>
+                    </div>
+                    </div>
+                
+
+
+                <div style="margin-top: 20px;">
+          
+                    <table style="width: 100%; border-collapse: collapse; border: 1px solid black;">
+                        <thead>
+
+                            <tr style="border: 1px solid black;">
+                                <th>
+                                    <strong>Leave Type:</strong>
+                                </th>
+
+
+                                <th>
+                                    <span>
+                                    <t t-esc="doc.holiday_status_id.name"/> / <t t-out="h"/> 
+                                    </span>
+                                </th>
+                                <th>
+                                    <strong>:نوع الإجازة</strong>
+                                </th>
+                            </tr>
+                        </thead>
+                    </table>
+
+
+                    <table style="margin-top:20px; width: 100%; border-collapse: collapse; border: 1px solid black;">
+                        <thead>
+
+                            <tr style="border: 1px solid black;">
+                                <th>
+                                    <strong>Inclusive Leave Period:</strong>
+                                </th>
+
+
+                                <th>
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <strong>From:</strong>
+                                            <span t-field="doc.request_date_from"/>
+                                        </div>
+                                        <div class="col-6">
+                                            <strong>To:</strong>
+                                            <span t-field="doc.request_date_to"/>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <strong>Total Duration (Days):</strong>
+                                            <span t-field="doc.number_of_days_display"/>
+                                             <strong>يوم</strong>
+                                        </div>
+                                    </div>
+                                </th>
+                                <th>
+                                    <strong>:فترة
+                                        الإجازة
+                                    </strong>
+                                </th>
+                            </tr>
+                        </thead>
+                    </table>
+
+                </div>
+                    <!-- Agreement Section -->
+                    <div style="padding: 10px; border: 1px solid black; margin-top: 20px; text-align: justify;">
+                        I, the undersigned, vow to return to work on the above date. I fully acknowledge
+                        that in the
+                        case
+                        that I do not return to work by this date, the company has the full right to
+                        take any action
+                        that it
+                        deems necessary against me (such as filing an absconding employee report,
+                        canceling my visa,
+                        or
+                        placing a ban against me) with the Ministry of Labor or the Department of
+                        Naturalization and
+                        Residency (whether I am inside or outside the country).
+
+
+                        <br/>
+                        <br/>
+                        <br/>
+                        <br/>
+
+                        أنا الموقع أدناه ألتزم تماماً بأن أكون على رأس عملي لدى الشركة (الكفيل) بالتاريخ
+                        المحدد
+                        أعلاه ، وفي حال تغيبي عن هذا الموعد يكون للشركة كامل الحق
+                        بأن تقوم باتخاذ أي إجراء تراه مناسب بحقي لدى وزارة العمل أو دائرة الهجرة
+                        والجوازات ، كفتح
+                        بلاغ هروب أو التعميم علي أو إلغاء إقامتي أو طلب وضع
+                        حرمان علي ، وذلك كله سواءً كنت داخل الدولة أو خارج الدولة .
+                    </div>
+
+                    <!-- Leave Period -->
+
+
+                    <!-- Signature Section -->
+                    <div style="margin-top: 20px;">
+                        <div>
+                            <strong>Employee's signature:</strong>
+                            <span>______________________________________</span>
+                            <strong>توقيع الموظف
+                            </strong>
+                        </div>
+                        <div class="mt-4">
+                            <strong>Telephone number outside UAE:</strong>
+                            <u><span t-field="line.mobile_phone"/></u>
+                            <strong>  رقم الهاتف خارج الإمارات
+                            </strong>
+
+                        </div>
+                    
+                </div>
+        
+           
+        </div>
+         </t>
+          </t>
+    </t>
+</t>
+
+        </template>
+
+
+<record id="report_leave_form" model="ir.actions.report">
+
+<field name="name">Leave Form</field>
+<field name="model">hr.leave</field>
+<field name="report_type">qweb-pdf</field>
+<field name="report_name">hr_edit.leave_form_pdf_template</field>
+<field name="report_file">hr_edit.leave_form_pdf_template</field>
+<field name="binding_model_id" ref="model_hr_leave"/>
+<field name="binding_type">report</field>
+
+</record>
+        </odoo>

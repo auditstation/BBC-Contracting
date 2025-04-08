@@ -1,0 +1,236 @@
+<?xml version="1.0"?>
+<odoo>
+
+    <!--                search      -->
+    <record id="view_production_search" model="ir.ui.view">
+        <field name="name">production</field>
+        <field name="model">production.line</field>
+        <field name="arch" type="xml">
+            <search string="Production search">
+                <field name="job_code"/>
+                <field name="start_date"/>
+                <field name="employee_id"/>
+
+                <field name="work_location_id"/>
+
+                <field string="Job Position" name="employee_id"
+                       filter_domain="[('employee_id.job_id.name', 'ilike', self)]"/>
+
+                <filter name="category_block" string="BLOCK" domain="[('category', '=', 'block')]"/>
+                <separator/>
+                <filter name="category_plaster" string="PLASTER" domain="[('category', '=', 'plaster')]"/>
+                <separator/>
+                <filter name="category_preparation" string="PREPARATION" domain="[('category', '=', 'preparation')]"/>
+                <separator/>
+                <filter name="category_tile" string="TILE" domain="[('category', '=', 'tile')]"/>
+                <separator/>
+                <filter name="category_helper" string="HELPER" domain="[('category', '=', 'helper')]"/>
+                <separator/>
+
+                <group expand='0' string='Group by...'>
+                    <filter string='Location' name="group_by_product_id" context="{'group_by': 'work_location_id'}"/>
+                    <filter string='Date' name="group_by_created_date" context="{'group_by': 'start_date'}"/>
+
+                </group>
+            </search>
+        </field>
+    </record>
+
+
+    <!--                                    Tree                     -->
+    <record id="production_line_tree_view" model="ir.ui.view">
+        <field name="name">production.line.tree</field>
+        <field name="model">production.line</field>
+        <field name="arch" type="xml">
+            <tree name='Production by code' decoration-danger="color">
+                <field name="color" column_invisible="1"/>
+                <field name="employee_id"/>
+                <field name="job_code"/>
+                <field name="start_date"/>
+
+                <field name="work_location_id"/>
+
+
+                <field name="layout_hour" sum="Layout Hour" optional="hide"/>
+                <field name="hollow_hour" sum="hollow" optional="hide"/>
+                <field name="aac_sob_hour" sum="aac" optional="hide"/>
+                <field name="external_plaster_hour" sum="external_plaster" optional="hide"
+                />
+                <field name="internal_plaster_hour" sum="internal_plaster" optional="hide"
+                />
+
+                <field name="internal_angles_hour" sum="internal_angles" optional="hide"
+                />
+                <field name="external_angles_hour" sum="external_angles" optional="hide"
+                />
+                <field name="point_hour" sum="point" optional="hide"
+                />
+                 <field name="point_s" sum="point_s" optional="hide"
+                />
+                  <field name="point_external" sum="point_external" optional="hide"
+                />
+                <field name="floor_tiles" sum="floor_tiles" optional="hide"/>
+                <field name="parquet_tiles" sum="parquet_tiles" optional="hide"/>
+                <field name="wall_tiles" sum="wall_tiles" optional="hide"/>
+                <field name="mosaic" sum="mosaic" optional="hide"/>
+                <field name="hreshold" sum="hreshold" optional="hide"/>
+                <field name="layout_tiles" sum="layout_tiles" optional="hide"/>
+                <field name="skirting" sum="skirting" optional="hide"/>
+                <field name="hours" sum="hours" optional="hide"/>
+                <field name="rush_coat" sum="rush_coat" optional="hide"/>
+                <field name="external_rush" sum="external_rush" optional="hide"/>
+                
+                <field name="absence" optional="hide"/>
+                <field name="leave" optional="hide"/>
+            </tree>
+        </field>
+    </record>
+
+    <!--            Form                      -->
+    <record id="production_line_form_view" model="ir.ui.view">
+        <field name="name">production.line.form</field>
+        <field name="model">production.line</field>
+        <field name="arch" type="xml">
+            <form string="Prodction">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                    </div>
+                    <group>
+                        <field name="lock" invisible="1"/>
+                        <group>
+                            <field name="start_date" readonly="lock == True" required="1"/>
+                            <field name="employee_id" readonly="lock == True"/>
+                            <field name="job_code" readonly="lock == True" required="1"/>
+                            <field name="work_location_id" readonly="lock == True" required="1"/>
+                            <field name="category" readonly="lock == True"/>
+                        </group>
+                        <group>
+                            <field name="hours" readonly="lock == True or absence in ['1','2'] or leave"/>
+                            <field name="rush_coat" readonly="lock == True or absence in ['1','2'] or leave" invisible="category not in ['all','helper'] or absence in ['1','2']"/>
+                            <field name="external_rush" readonly="lock == True or absence in ['1','2'] or leave" invisible="category not in ['all','helper'] or absence in ['1','2']"/>
+                           
+                            <field name="absence" readonly="lock == True"
+                                   invisible="aac_sob_hour > 0 or external_angles_hour > 0 or external_plaster_hour > 0 or floor_tiles > 0 or hollow_hour > 0 or hours > 0 or hreshold > 0 or layout_hour > 0 or layout_tiles > 0 or wall_tiles > 0 or mosaic > 0 or parquet_tiles > 0 or point_hour > 0"/>
+                            <field name="leave"/>
+                            <field name="reason" required="absence == '1'" readonly="lock == True"
+                                   invisible="aac_sob_hour > 0 or external_angles_hour > 0 or external_plaster_hour > 0 or floor_tiles > 0 or hollow_hour > 0 or hours > 0 or hreshold > 0 or layout_hour > 0 or layout_tiles > 0 or wall_tiles > 0 or mosaic > 0 or parquet_tiles > 0 or point_hour > 0"/>
+                            <!--                        <field name="reason_file" required="absence == '1'" readonly="lock == True" widget="pdf_viewer"/>-->
+
+                            <field name="attachment_ids" required="absence == '1'" invisible="1"
+                                   readonly="lock == True"/>
+                            <label for="supported_attachment_ids" string="Supporting Document"/>
+                            <field name="supported_attachment_ids" widget="many2many_binary" nolabel="1"
+                                   required="absence == '1'"/>
+                        </group>
+                        <group>
+
+                            <field name="layout_hour" readonly="lock == True or leave"
+                                   invisible="category not in ['all','block'] or absence in ['1','2']"/>
+                            <field name="hollow_hour" readonly="lock == True or leave"
+                                   invisible="category not in ['all','block'] or absence in ['1','2']"/>
+                            <field name="aac_sob_hour" readonly="lock == True or leave"
+                                   invisible="category not in ['all','block'] or absence in ['1','2']"/>
+                            <field name="external_plaster_hour" readonly="lock == True or leave"
+                                   invisible="category not in ['all','plaster'] or absence in ['1','2']"
+                            />
+                        </group>
+                        <group>
+                            <field name="internal_plaster_hour" readonly="lock == True or leave"
+                                   invisible="category not in ['all','plaster'] or absence in ['1','2']"
+                            />
+
+                            <field name="internal_angles_hour" readonly="lock == True or leave"
+                                   invisible="category not in ['all','preparation'] or absence in ['1','2']"
+                            />
+                            <field name="external_angles_hour" readonly="lock == True or leave"
+                                   invisible="category not in ['all','preparation'] or absence in ['1','2']"
+                            />
+                            <field name="point_hour" readonly="lock == True"
+                                   invisible="category not in ['all','preparation'] or absence in ['1','2']"
+                            />
+                            <field name="point_s" readonly="lock == True or leave"
+                                   invisible="category not in ['all','preparation'] or absence in ['1','2']"
+                            />
+                            <field name="point_external" readonly="lock == True or leave"
+                                   invisible="category not in ['all','preparation'] or absence in ['1','2']"
+                            />
+                        </group>
+                        <group>
+                            <field name="floor_tiles" readonly="lock == True or leave"
+                                   invisible="category not in ['all','tile'] or absence in ['1','2']"/>
+                            <field name="parquet_tiles" readonly="lock == True or leave"
+                                   invisible="category not in ['all','tile'] or absence in ['1','2']"/>
+                            <field name="wall_tiles" readonly="lock == True or leave"
+                                   invisible="category not in ['all','tile'] or absence in ['1','2']"/>
+                            <field name="mosaic" readonly="lock == True or leave"
+                                   invisible="category not in ['all','tile'] or absence in ['1','2']"/>
+                            <field name="hreshold" readonly="lock == True or leave"
+                                   invisible="category not in ['all','tile'] or absence in ['1','2']"/>
+                            <field name="layout_tiles" readonly="lock == True or leave"
+                                   invisible="category not in ['all','tile'] or absence in ['1','2']"/>
+                            <field name="skirting" readonly="lock == True or leave"
+                                   invisible="category not in ['all','tile'] or absence in ['1','2']"/>
+                        </group>
+
+                    </group>
+                    <group>
+
+
+                    </group>
+
+
+                </sheet>
+                <div class="o_attachment_preview"/>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="message_ids"/>
+                </div>
+
+            </form>
+        </field>
+    </record>
+
+     <!--                               Pivot                  -->
+    <record id="view_production_line_pivot" model="ir.ui.view">
+        <field name="name">production.line.pivot</field>
+        <field name="model">production.line</field>
+        <field name="arch" type="xml">
+            <pivot string="Production" sample="1">
+                <field name="start_date" interval="day" type="row"/>
+                <field name="work_location_id" type="row"/>
+                <field name="employee_id" type="col"/>
+                <field name="job_code" type="col"/>
+
+            </pivot>
+        </field>
+    </record>
+
+    <!--                               Graph                  -->
+    <record id="work_production_line_graph" model="ir.ui.view">
+        <field name="name">production.line.view.graph</field>
+        <field name="model">production.line</field>
+        <field name="arch" type="xml">
+            <graph string="Production" sample="1">
+                <field name="employee_id"/>
+                <field name="job_code"/>
+                <field name="work_location_id"/>
+            </graph>
+        </field>
+    </record>
+
+
+    <record id="employee_production_line_action" model="ir.actions.act_window">
+        <field name="name">Production by code</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">production.line</field>
+        <field name="view_mode">tree,form,pivot,graph</field>
+        <field name="search_view_id" ref="hr_edit.view_production_search"/>
+
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Create a new Work Location.
+            </p>
+        </field>
+    </record>
+
+</odoo>

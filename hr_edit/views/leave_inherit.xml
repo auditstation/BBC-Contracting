@@ -1,0 +1,108 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="hr_leave_view_form_data" model="ir.ui.view">
+        <field name="name">hr.leave.view.form.inherit</field>
+        <field name="model">hr.leave</field>
+        <field name="inherit_id" ref="hr_holidays.hr_leave_view_form_manager"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="resuming_work_date"/>
+            </xpath>
+            <xpath expr="//form[1]/sheet[1]/div[2]/div[1]/group[@name='col_left']/field[@name='holiday_type']" position="after">
+                <field name="job_code" groups="hr_holidays.group_hr_holidays_user" invisible="holiday_type != 'employee'" readonly="state in ['cancel', 'refuse', 'validate', 'validate1']" widget="many2many_tags"/>
+                    
+            </xpath>
+            <xpath expr="//form[1]/sheet[1]/div[2]" position="after">
+                <notebook>
+                    <page string="Identification Detail" name="paper_details">
+                        <group>
+                             <field name="employee_ids">
+                                <tree editable="bottom" create="false" delete="false" edit="false">
+                                <field name="name"/>
+                                <field name="passport_id"/>
+                                <field name="passport_expire"/>
+                              
+                                <field name="uid_no"/>
+                                    <field name="uid_expire"/>
+                                <field name="eid_no"/>
+                                <field name="eid_expire"/>
+                                </tree>
+                            </field>
+                          
+                        </group>
+                    </page>
+                    <page string="Assets in Custody" name="assets">
+
+
+                            <field name="assets" domain="[('employee_id','in',employee_ids),('dismissed_date','=',False)]">
+                                <tree editable="bottom" create="false" delete="false">
+                                <field name="name"/>
+                                <field name="category_id"/>
+                                <field name="employee_id"/>
+                                <field name="assign_date"/>
+                                <field name="dismissed_date"/>
+                                </tree>
+                            </field>
+
+                    </page>
+                </notebook>
+            </xpath>
+            <xpath expr="//field[@name='resuming_work_date']" position="after">
+    <field name="ticket_price"/>
+    <field name="hold"/>
+    <field name="currency_id" invisible="1"/>
+  </xpath>
+        </field>
+    </record>
+    <record id="hr_leave_view_tree_account" model="ir.ui.view">
+        <field name="name">hr.holidays.view.tree</field>
+        <field name="model">hr.leave</field>
+        <!--        <field name="domain">[('state', '=', 'validate')]</field>-->
+        <field name="arch" type="xml">
+            <tree string="Validate Time Off" sample="1" create="0">
+                <field name="employee_id" column_invisible="True"
+                       readonly="state in ['cancel', 'refuse', 'validate', 'validate1']"/>
+                <field name="all_employee_ids" widget="many2many_tags_avatar" decoration-muted="not active_employee"
+                       string="Employees"/>
+                <field name="department_id" optional="hidden"
+                       readonly="state in ['cancel', 'refuse', 'validate', 'validate1']"/>
+                <field name="holiday_type" string="Mode" groups="base.group_no_one"
+                       readonly="state not in ['confirm', 'draft']" optional="hidden"/>
+                <field name="holiday_status_id" class="fw-bold"
+                       readonly="state in ['cancel', 'refuse', 'validate', 'validate1']"/>
+                <field name="name" optional="hidden"/>
+                <field name="date_from" readonly="state in ['cancel', 'refuse', 'validate', 'validate1']"/>
+                <field name="date_to" readonly="state in ['cancel', 'refuse', 'validate', 'validate1']"/>
+                <field name="duration_display" string="Duration"/>
+                <field name="currency_id" column_invisible="True"/>
+                <field name="employee_pur_ticket" optional="hidden"/>
+                <field name="ticket_price" optional="show" sum="Ticket Price"/>
+                <field name="hold" optional="show" sum="Hold"/>
+                <field name="state" widget="badge" decoration-info="state == 'draft'"
+                       decoration-warning="state in ('confirm','validate1')" decoration-success="state == 'validate'"
+                       optional="hidden"/>
+                <field name="active_employee" column_invisible="True"/>
+                <field name="category_id" column_invisible="True" readonly="state not in ['confirm', 'draft']"/>
+                <field name="user_id" column_invisible="True"/>
+
+            </tree>
+        </field>
+    </record>
+    <record id="hr_leave_view_tree_account_action" model="ir.actions.act_window">
+        <field name="name">hr.leave.account.view</field>
+        <field name="res_model">hr.leave</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('state', '=', 'validate')]</field>
+        <field name="context">{'search_default_group_employee':1}</field>
+        <field name="view_id" ref="hr_edit.hr_leave_view_tree_account"/>
+    </record>
+    <menuitem id="time_off_account_details"
+              name="Time-Off Account Details"
+              parent="hr_holidays.menu_hr_holidays_management"
+              sequence="30"
+              action="hr_leave_view_tree_account_action"
+              groups="hr.group_hr_manager"
+    />
+   
+
+</odoo>

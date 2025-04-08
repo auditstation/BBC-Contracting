@@ -1,0 +1,110 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="view_safety_search" model="ir.ui.view">
+        <field name="name">saftey.induction.search</field>
+        <field name="model">saftey.induction</field>
+        <field name="arch" type="xml">
+            <search string="Safety search">
+                <field name="job_code"/>
+                <field name="employee_id"/>
+
+                <field name="date"/>
+
+                <group expand='0' string='Group by...'>
+                    <filter string='Date' name="group_by_created_date" context="{'group_by': 'date'}"/>
+
+
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="safety_tree_view" model="ir.ui.view">
+        <field name="name">saftey.induction.tree</field>
+        <field name="model">saftey.induction</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="employee_id" widget="many2many_tags"/>
+                <field name="job_code" widget="many2many_tags"/>
+                <field name="designation" optional="show"/>
+                <field name="current_project" optional="show"/>
+                <field name="date" optional="show"/>
+            </tree>
+        </field>
+    </record>
+    <record id="work_saftey_form_view" model="ir.ui.view">
+        <field name="name">saftey.induction.form</field>
+        <field name="model">saftey.induction</field>
+        <field name="arch" type="xml">
+            <form string="Saftey">
+                <sheet>
+                    <group>
+                        <field name="date"/>
+                        <field name="employee_id" widget="many2many_tags"/>
+                        <field name="job_code" widget="many2many_tags"/>
+
+                        <field name="all_project">
+                            <tree editable="bottom" decoration-danger="training == 'no'" decoration-success="training == 'yes'" decoration-primary="training == 'banned'">
+                                <field name="put_change" nolabel="1"/>
+                                <field name="project"/>
+                                <field name="job_code"/>
+                                <field name="employee_id"/>
+                                <field name="designation"/>
+                                <field name="training"/>
+                                <field name="date"/>
+
+                            </tree>
+                        </field>
+                    </group>
+
+
+                </sheet>
+                <div class="o_attachment_preview"/>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" groups="base.group_user"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+
+            </form>
+        </field>
+    </record>
+
+    <record id="employee_saftey_action" model="ir.actions.act_window">
+        <field name="name">Add Safety</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">saftey.induction</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_safety_search"/>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Create a new Saftey.
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="employee_safety_menu"
+              parent="hr_edit.employee_transfer_menu_open_transfer"
+              name="Safety"
+              sequence="3"
+
+              groups="hr.group_hr_manager"
+
+    />
+    <menuitem id="employee_safety_menu_allocation"
+              parent="hr_edit.employee_safety_menu"
+              name="Add Safety"
+              sequence="12"
+              action="hr_edit.employee_saftey_action"
+              groups="hr.group_hr_manager"
+
+    />
+    <menuitem id="employee_project_menu_allocation"
+              parent="hr_edit.employee_safety_menu"
+              name="Safety Tracking"
+              sequence="15"
+              action="hr_edit.employee_project_action"
+              groups="hr.group_hr_manager"
+
+    />
+</odoo>

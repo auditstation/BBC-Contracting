@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record model="ir.ui.view" id="advance_salary_edit">
+        <field name="name">Advance Salary Edit</field>
+        <field name="model">salary.advance</field>
+        <field name="inherit_id" ref="ohrms_salary_advance.salary_advance_view_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//field[@name='advance']" position="after">
+                <field name="duration" readonly='state in ["approve", "cancel", "reject"]'/>
+                <field name="presumed_payment_date"/>
+                <!--                <field name="type" readonly='state in ["approve", "cancel", "reject"]'/>-->
+                <field name="reason_selection"/>
+            </xpath>
+            <xpath expr="//field[@name='department']" position="after">
+                <xpath expr="//field[@name='employee_contract_id']" position="move"/>
+            </xpath>
+            <xpath expr="//field[@name='date']" position="attributes">
+                <attribute name="force_save">1</attribute>
+                <attribute name="readonly">state in ["approve","submit", "cancel", "reject", "in_progress", "under_recover", "paid"]</attribute>
+            </xpath>
+            <xpath expr="//field[@name='employee_contract_id']" position="attributes">
+                <attribute name="force_save">1</attribute>
+                <attribute name="readonly">True</attribute>
+            </xpath>
+            <!--            <xpath expr="//field[@name='exceed_condition']" position="after">-->
+            <!--                <field name="delay_condition" readonly='state in ["approve", "cancel", "reject"]'/>-->
+            <!--            </xpath>-->
+            <xpath expr="//field[@name='exceed_condition']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='employee_id']" position="after">
+<field name="job_code" readonly='state in ["approve","submit", "cancel", "reject", "in_progress", "under_recover", "paid"]'/>
+                <field name="first_name"/>
+                <field name="middle_name"/>
+                <field name="last_name"/>
+
+            </xpath>
+            <xpath expr="//field[@name='department']" position="after">
+                <field name="designation"/>
+                <field name="reporting_to"/>
+                <field name="joining_date"/>
+            </xpath>
+            <xpath expr="//sheet" position="after">
+                <div class="o_attachment_preview"/>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids" options="{'post_refresh': 'recipients'}"/>
+                </div>
+            </xpath>
+            <xpath expr="//field[@name='state']" position="attributes">
+                <attribute name="statusbar_visible">
+                    draft,in_progress,under_recover
+                </attribute>
+            </xpath>
+            <xpath expr="//header/button[@name='approve_request']" position="after">
+                <field name="manual_approve" widget="toggle_button" readonly="state not in ['submit']"
+                       invisible="state not in ['submit']"/>
+            </xpath>
+            <xpath expr="//header/button[@name='approve_request_acc_dept']" position="attributes">
+                <attribute name="invisible">manual_approve == False or state not in ['submit']</attribute>
+            </xpath>
+            <xpath expr="//header/button[@name='approve_request']" position="attributes">
+                <attribute name="invisible">True</attribute>
+            </xpath>
+            <xpath expr="//header" position="inside">
+
+                <button name="action_compute_installment" type="object"
+                        string="Compute Installment" class="oe_highlight"
+                        invisible="state not in ['in_progress']"/>
+                <button name="action_recompute_installment" type="object"
+                        string="Recompute Installment" class="oe_highlight"
+                        invisible="state in ['draft','submit','in_progress','cancel','reject','approve']"/>
+            </xpath>
+            <xpath expr="//field[@name='company_id']" position="after">
+                <xpath expr="//form[1]/sheet[1]/group[1]/group[1]/field[@name='date']" position="move"/>
+                <xpath expr="//field[@name='reason']" position="move"/>
+                <!--                <xpath expr="//field[@name='delay_condition']" position="move"/>-->
+            </xpath>
+            <xpath expr="//field[@name='department']" position="attributes">
+                <attribute name="force_save">1</attribute>
+                <attribute name="readonly">True</attribute>
+            </xpath>
+            <xpath expr="//field[@name='debit']" position="replace">
+                <field name="debit"
+                       groups="account.group_account_manager" invisible="1"/>
+            </xpath>
+            <xpath expr="//field[@name='journal']" position="replace">
+                <field name="journal" invisible="1"
+
+                       groups="account.group_account_manager"/>
+            </xpath>
+            <xpath expr="//field[@name='credit']" position="replace">
+                <field name="credit" invisible="1" groups="account.group_account_manager"/>
+
+            </xpath>
+            <xpath expr="//field[@name='reason']" position="attributes">
+                <attribute name="invisible">reason_selection != "other"</attribute>
+            </xpath>
+            <xpath expr="//field[@name='employee_id']" position="attributes">
+    <attribute name="force_save">1</attribute>
+    <attribute name="readonly">state in ["approve","submit", "cancel", "reject", "in_progress", "under_recover", "paid"]</attribute>
+  </xpath>
+  <xpath expr="//field[@name='advance']" position="attributes">
+    <attribute name="force_save">1</attribute>
+    <attribute name="readonly">state in ["approve", "cancel", "reject", "under_recover"]</attribute>
+  </xpath>
+  <xpath expr="//field[@name='currency_id']" position="attributes">
+    <attribute name="force_save">1</attribute>
+    <attribute name="readonly">state in ["approve", "cancel", "reject", "in_progress", "under_recover", "paid"]</attribute>
+  </xpath>
+  <xpath expr="//field[@name='company_id']" position="attributes">
+    <attribute name="force_save">1</attribute>
+    <attribute name="readonly">True</attribute>
+  </xpath>
+
+            <xpath expr="//form/sheet" position="inside">
+                <notebook>
+                    <page string="Installments" invisible="state in ['draft','submit','in_progress','cancel']">
+                        <field name="installment_lines">
+                            <tree string="Installments" editable="bottom">
+                                <field name="id"/>
+                                <field name="date"/>
+<!--                                 <field name="delay_condition"/> -->
+                                <field name="delay_period"/>
+                                <field name="amount"/>
+                                <field name="paid"/>
+                                <field name="desc" readonly="1" optional="show"/>
+                                <button string="exempt" name="company_exempt" type="object"/>
+                            </tree>
+                        </field>
+                        <group class="oe_subtotal_footer oe_right"
+                               colspan="2">
+                            <field name="total_amount" widget="monetary"
+                                   options="{'currency_field': 'currency_id'}"/>
+                            <field name="total_paid_amount"
+                                   widget="monetary"
+                                   options="{'currency_field': 'currency_id'}"/>
+                            <field name="balance_amount"
+                                   class="oe_subtotal_footer_separator"
+                                   widget="monetary"
+                                   options="{'currency_field': 'currency_id'}"/>
+                        </group>
+                        <div class="oe_clear"/>
+                    </page>
+                    <page string="Employee Signature" name="employee_signature" invisible="state in ['draft','cancel']">
+                        <group>
+                            <group>
+                                <field widget="signature" nolabel="1" name="employee_signature"/>
+                            </group>
+                            <group string="Signed Voucher">
+                                <field name="attachment_ids" widget="many2many_binary" nolabel="1"/>
+                            </group>
+                        </group>
+
+                    </page>
+                    <page string="Accountant Signature" name="acount_signature" invisible="state in ['draft','cancel']">
+
+
+                        <field widget="signature" name="account_signature"/>
+
+                    </page>
+                    <page string="Manager Signature" name="manager_signature" invisible="state in ['draft','cancel']">
+
+
+                        <field widget="signature" name="manager_signature"/>
+
+                    </page>
+                </notebook>
+            </xpath>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="advance_salary_tree_edit">
+        <field name="name">Advance Salary Tree Edit</field>
+        <field name="model">salary.advance</field>
+        <field name="inherit_id" ref="ohrms_salary_advance.salary_advance_view_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='state']" position="attributes">
+                <attribute name="widget">badge</attribute>
+                <attribute name="decoration-success">
+                    state == 'under_recover'
+                </attribute>
+                <attribute name="decoration-info">
+                    state == 'draft'
+                </attribute>
+                <attribute name="decoration-warning">
+                    state == 'in_progress'
+                </attribute>
+            </xpath>
+            <xpath expr="//field[@name='advance']" position="before">
+                <field name='duration' optional="hide"/>
+                <field name='job_code' optional="show"/>
+                <field name='reason_selection' optional="hide"/>
+                <field name='presumed_payment_date' optional="hide"/>
+                <field name='balance_amount' optional="show" sum="Total Balance"/>
+                <field name='total_paid_amount' optional="show" sum="Total paid amount"/>
+            </xpath>
+        </field>
+    </record>
+    <record id="action_report_salary_advance" model="ir.actions.report">
+        <field name="name">Salary Advance Report</field>
+        <field name="model">salary.advance</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">hr_edit.report_salary_advance</field>
+        <field name="report_file">hr_edit.report_salary_advance</field>
+        <field name="binding_model_id" ref="model_salary_advance"/>
+        <field name="binding_type">report</field>
+
+    </record>
+</odoo>

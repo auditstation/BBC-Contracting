@@ -1,0 +1,9 @@
+/* .header_custom table thead > tr > th {
+    background-color: #0b97c4 !important;
+} */
+.header_custom table thead > tr > th:nth-child(1) {
+    width:  200Px !important;
+}
+.header_custom table thead > tr > th:nth-child(2) {
+    width:  200Px !important;
+}

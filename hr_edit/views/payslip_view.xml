@@ -1,0 +1,137 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="view_hr_payslip_form_inherit" model="ir.ui.view">
+        <field name="name">hr.payslip.form.inherit</field>
+        <field name="model">hr.payslip</field>
+        <field name="inherit_id" ref="hr_payroll.view_hr_payslip_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='struct_id']" position="after">
+                <field name="have_sal_adv" invisible="1"/>
+            </xpath>
+            <xpath expr="//page[@name='salary_computation']/field[@name='line_ids']/tree/field[@name='currency_id']"
+                   position="after">
+                 <field name="paid" column_invisible="not parent.have_sal_adv" invisible="code not in ['salm', 'sal', 'salh']"/>
+                <field name="exempt" column_invisible="not parent.have_sal_adv" invisible="code not in ['salm', 'sal', 'salh']"/>
+                <field name="delay" column_invisible="not parent.have_sal_adv" invisible="code not in ['salm', 'sal', 'salh']"/>
+                <field name="delay_period" column_invisible="not parent.have_sal_adv" invisible="code not in ['salm', 'sal', 'salh']"/>
+            </xpath>
+              <xpath expr="//field[@name='struct_id']" position="after">
+                    <field name="other_bonus" invisible="struct_id not in [%(hr_edit.helper_structure_bbc)d,%(hr_edit.mason_structure_bbc)d,%(hr_edit.staff_structure_bbc)d]"/>
+                    <field name="safety_fines" invisible="struct_id not in [%(hr_edit.helper_structure_bbc)d,%(hr_edit.mason_structure_bbc)d]"/>
+                    <field name="other_dec" invisible="struct_id not in [%(hr_edit.helper_structure_bbc)d,%(hr_edit.mason_structure_bbc)d,%(hr_edit.staff_structure_bbc)d]"/>
+                    <field name="gas_ded" invisible="struct_id != %(hr_edit.mason_structure_bbc)d"/>
+                    <field name="plaster_bonus" invisible="struct_id != %(hr_edit.mason_structure_bbc)d"/>
+                    <field name="allotted_bonus" invisible="struct_id != %(hr_edit.helper_structure_bbc)d"/>
+              </xpath>
+              <xpath expr="//page[@name='worked_days_input']" position="attributes">
+                <attribute name="invisible">True</attribute>
+              </xpath>
+            <xpath expr="//header" position="inside">
+                <button name="print_payslip_report_helper" type="object" icon="fa-lg fa-save" string="Print Helper Payslip" invisible="struct_id != %(hr_edit.helper_structure_bbc)d"/>
+                <button name="print_payslip_report_mason" type="object" icon="fa-lg fa-save" string="Print Mason Payslip" invisible="struct_id != %(hr_edit.mason_structure_bbc)d"/>
+            </xpath>
+            <xpath expr="//form[1]/sheet[1]/group[1]/label[1]" position="before">
+    <field name="job_code"/>
+<!--     <field name="time_off_id"/> -->
+  </xpath>
+        </field>
+    </record>
+    <record id="hr_payslip_action_view_to_report_dubai" model="ir.actions.act_window">
+        <field name="name">Payslips</field>
+        <field name="res_model">hr.payslip</field>
+        <field name="view_mode">tree,form</field>
+
+        <field name="domain">['|',('employee_id.branch', '=', 'dubai'),('employee_id.on_company_sponsorship', '=', 'no')]</field>
+    </record>
+
+    <menuitem id="reporting_lolo"
+              parent="hr_payroll.menu_hr_payroll_report"
+              name="Dubai"
+              sequence="30"
+              action="hr_edit.hr_payslip_action_view_to_report_dubai"
+    />
+    <record id="hr_payslip_action_view_to_report_sponsor" model="ir.actions.act_window">
+        <field name="name">Payslips</field>
+        <field name="res_model">hr.payslip</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('employee_id.branch', '=', 'sharjah')]</field>
+    </record>
+
+    <menuitem id="reporting_lolo_sh"
+              parent="hr_payroll.menu_hr_payroll_report"
+              name="Sharjah"
+              sequence="31"
+              action="hr_edit.hr_payslip_action_view_to_report_sponsor"
+    />
+    <record model="ir.ui.view" id="open_payslip_view_2">
+        <field name="name">hr.payslip</field>
+        <field name="model">hr.payslip</field>
+        <field name="priority">60</field>
+        <field name="arch" type="xml">
+            <tree string="Payslips" sample="1" multi_edit="1" editable="bottom">
+                <field name="number"/>
+                <field name="job_code" optional="show" readonly="True"/>
+                <field name="employee_id" optional="show" readonly="True"/>
+                <field name="hold_amount_add" optional="show" string="Origin"/>  
+                <field name="last_hold" optional="show" string="Hold Paid"/>  
+                <field name="paid_hold" optional="show" string="Paid?"/> 
+                <field name="struct_id" optional="hide"/>
+                <field name="net_wage" optional="show"/>
+            </tree>
+        </field>
+    </record>
+ <record id="open_payslip_action_2" model="ir.actions.act_window">
+        <field name="name">hr.payslip</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">hr.payslip</field>
+        <field name="domain">[('last_hold','!=',0)]</field>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="hr_edit.open_payslip_view_2"/>
+        
+    </record>
+    <record model="ir.ui.view" id="report_email">
+        <field name="name">Payslip</field>
+        <field name="model">hr.payslip</field>
+        <field name="inherit_id" ref="hr_payroll.view_hr_payslip_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="inside">
+                <header>
+                    <button type="object" name="print_payslip_report_xlsx" string="Payslip Report"/>
+                
+<!--                     <button 
+                            class="btn-primary ms-1" 
+                        display="always" type="action" name="%(hr_edit.open_payslip_action_2)d" string="Hold Decision"/> -->
+                    <button 
+                            class="btn-primary ms-1" 
+                        display="always" type="object" name="action_open_payslip_2" string="Hold Decision"/>
+                </header>
+            </xpath>
+            <xpath expr="//field[@name='number']" position="after">
+    <field name="job_code" optional="show"/>
+  </xpath>
+             <xpath expr="//field[@name='basic_wage']" position="after">
+    <field name="hold_amount_add" optional="show" string="Hold Origin"/> 
+                  <field name="hold_amount_add" optional="show" string="Hold"/> 
+  </xpath>
+  <xpath expr="//field[@name='basic_wage']" position="attributes">
+    <attribute name="column_invisible">True</attribute>
+  </xpath>
+  <xpath expr="//field[@name='gross_wage']" position="attributes">
+    <attribute name="column_invisible">True</attribute>
+  </xpath>
+
+        </field>
+    </record>
+       <record id="action_paid_payslip" model="ir.actions.server">
+            <field name="name">Paid</field>
+            <field name="model_id" ref="hr_payroll.model_hr_payslip"/>
+            <field name="binding_model_id" ref="hr_payroll.model_hr_payslip"/>
+            <field name="binding_view_types">list</field>
+            <field name="state">code</field>
+            <field name="code">
+            if records:
+                for rec in records:
+                    rec.action_payslip_paid()
+            </field>
+        </record>
+</odoo>

@@ -1,0 +1,163 @@
+<?xml version="1.0"?>
+<odoo>
+    <!--    search                        -->
+    <record id="view_project_search" model="ir.ui.view">
+        <field name="name">saftey.induction.search</field>
+        <field name="model">project.line</field>
+        <field name="arch" type="xml">
+            <search string="Safety search">
+                <field name="job_code"/>
+                <field name="employee_id"/>
+                <field name="current_project"/>
+                <field name="project"/>
+                <field name="training"/>
+                <field name="date"/>
+                <filter name="no" string="No Training"
+                        domain="[('training','=','no')]"/>
+                <filter name="yes" string="Training"
+                        domain="[('training','=','yes')]"/>
+                <filter name="banned" string="Banned"
+                        domain="[('training','=','banned')]"/>
+
+                <group expand='0' string='Group by...'>
+                    <filter string='Date' name="group_by_created_date" context="{'group_by': 'date'}"/>
+                    <filter string='Training' name="group_by_training" context="{'group_by': 'training'}"/>
+                    <filter string='Employee' name="group_by_employee" context="{'group_by': 'employee_id'}"/>
+                    <filter string='Job code' name="group_by_job" context="{'group_by': 'job_code'}"/>
+
+                    <filter string='Project' name="group_by_project" context="{'group_by': 'project'}"/>
+
+
+                </group>
+            </search>
+        </field>
+    </record>
+    <!--    tree                        -->
+    <record id="work_all_saftey_form_view" model="ir.ui.view">
+        <field name="name">project.line.tree</field>
+        <field name="model">project.line</field>
+        <field name="arch" type="xml">
+
+            <tree default_order="date desc" create="0" decoration-danger="training == 'no'"
+                  decoration-success="training == 'yes'" decoration-primary="training == 'banned'">
+                <field name="current_project"/>
+                <field name="project"/>
+                <field name="job_code"/>
+                <field name="employee_id"/>
+                <field name="designation" string="Designation"/>
+                <field name="training" decoration-danger="training == 'no'"
+                       decoration-success="training == 'yes'" decoration-primary="training == 'banned'"/>
+                <field name="date"/>
+
+            </tree>
+
+        </field>
+    </record>
+
+
+    <!--                               Kanban                  -->
+    <record id="project_line_kanban_view" model="ir.ui.view">
+        <field name="name">project.line.kanban.lead</field>
+        <field name="model">project.line</field>
+        <field name="priority" eval="1"/>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_small_column" default_group_by="project" archivable="false" sample="1"
+                    create="false" group_create="false">
+                <field name="current_project" readonly="1" invisible="1"/>
+                <field name="project" readonly="1" invisible="1"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="oe_kanban_global_click oe_kanban_card d-flex flex-column">
+                            <div class="oe_kanban_content flex-grow-1">
+                                <div class="oe_kanban_details">
+                                    <strong class="o_kanban_record_title">
+                                        <field name="employee_id" readonly="1"/>
+                                    </strong>
+
+                                </div>
+
+                                <div>
+                                    <field name="job_code" readonly="1"/>
+                                </div>
+                                <div>
+                                    <field name="current_project" readonly="1"/>
+                                </div>
+                                <div>
+                                    <field name="designation" readonly="1"/>
+                                </div>
+                                <div>
+                                    <field name="training" readonly="1" decoration-danger="training == 'no'"
+                                           decoration-success="training == 'yes'"
+                                           decoration-primary="training == 'banned'"/>
+                                </div>
+
+                            </div>
+                            <div class="oe_kanban_footer">
+                                <div class="o_kanban_record_bottom">
+                                    <div class="oe_kanban_bottom_left">
+
+                                        <field name="date" readonly="1"/>
+                                    </div>
+                                    <div>
+
+                                    </div>
+
+                                </div>
+                                <div class="clearfix"/>
+
+                            </div>
+                        </div>
+                    </t>
+
+                </templates>
+
+            </kanban>
+        </field>
+    </record>
+
+    <!--                               Pivot                  -->
+    <record id="view_project_line_pivot" model="ir.ui.view">
+        <field name="name">project.line.pivot</field>
+        <field name="model">project.line</field>
+        <field name="arch" type="xml">
+            <pivot string="Allocation" sample="1">
+                <field name="date" interval="day" type="row"/>
+
+                <field name="project" type="row"/>
+                <field name="employee_id" type="col"/>
+                <field name="job_code" type="col"/>
+                <field name="training" type="row"/>
+            </pivot>
+        </field>
+    </record>
+
+    <!--                               Graph                  -->
+    <record id="project_line_view_graph" model="ir.ui.view">
+        <field name="name">project.line.view.graph</field>
+        <field name="model">project.line</field>
+        <field name="arch" type="xml">
+            <graph string="Allocation" sample="1">
+                <field name="employee_id"/>
+                <field name="job_code"/>
+                <field name="current_project"/>
+                <field name="project"/>
+                <field name="training"/>
+            </graph>
+        </field>
+    </record>
+
+
+    <record id="employee_project_action" model="ir.actions.act_window">
+        <field name="name">Safety Induction Tracking section</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">project.line</field>
+        <field name="view_mode">tree,kanban,pivot,graph</field>
+        <field name="search_view_id" ref="view_project_search"/>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+              
+            </p>
+        </field>
+    </record>
+
+</odoo>

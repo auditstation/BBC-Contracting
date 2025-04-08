@@ -1,0 +1,156 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="hr_contract_view_form_inherit" model="ir.ui.view">
+        <field name="name">hr.contract.view.form.inherit</field>
+        <field name="model">hr.contract</field>
+        <field name="inherit_id" ref="hr_contract.hr_contract_view_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//group[@name='yearly_benefits']" position="inside">
+               <field name="contract_salary"/>
+                <field name="wage_type" invisible="1"/>
+                <label for="hollow_block" invisible="wage_type != 'hourly'"/>
+                <div class="o_row mw-50" name="helper_wage" invisible="wage_type != 'hourly'">
+                    <field name="hollow_block" nolabel="1"/>
+                    <span>/ hour</span>
+                </div>
+                <label for="layout_block" invisible="wage_type != 'hourly'"/>
+                <div class="o_row mw-50" name="helper_wage" invisible="wage_type != 'hourly'">
+                    <field name="layout_block" nolabel="1"/>
+                    <span>/ hour</span>
+                </div>
+
+                <label for="internal_angles" invisible="wage_type != 'hourly'"/>
+                <div class="o_row mw-50" name="helper_wage" invisible="wage_type != 'hourly'">
+                    <field name="internal_angles" nolabel="1"/>
+                    <span>/ hour</span>
+                </div>
+                <label for="external_angles" invisible="wage_type != 'hourly'"/>
+                <div class="o_row mw-50" name="helper_wage" invisible="wage_type != 'hourly'">
+                    <field name="external_angles" nolabel="1"/>
+                    <span>/ hour</span>
+                </div>
+                <label for="internal_plaster" invisible="wage_type != 'hourly'"/>
+                <div class="o_row mw-50" name="helper_wage" invisible="wage_type != 'hourly'">
+                    <field name="internal_plaster" nolabel="1"/>
+                    <span>/ hour</span>
+                </div>
+                <label for="external_plaster" invisible="wage_type != 'hourly'"/>
+                <div class="o_row mw-50" name="helper_wage" invisible="wage_type != 'hourly'">
+                    <field name="external_plaster" nolabel="1"/>
+                    <span>/ hour</span>
+                </div>
+                <label for="floor_tiles" invisible="wage_type != 'hourly'"/>
+                <div class="o_row mw-50" name="helper_wage" invisible="wage_type != 'hourly'">
+                    <field name="floor_tiles" nolabel="1"/>
+                    <span>/ hour</span>
+                </div>
+                <label for="parquet_tiles" invisible="wage_type != 'hourly'"/>
+                <div class="o_row mw-50" name="helper_wage" invisible="wage_type != 'hourly'">
+                    <field name="parquet_tiles" nolabel="1"/>
+                    <span>/ hour</span>
+                </div>
+                         <!-- ...........//........ -->
+                <label for="rush_coat" invisible="wage_type != 'hourly'"/>
+                <div class="o_row mw-50" name="rush_coat" invisible="wage_type != 'hourly'">
+                    <field name="rush_coat" nolabel="1"/>
+                    <span>/ hour</span>
+                </div>
+                <label for="external_rush" invisible="wage_type != 'hourly'"/>
+                <div class="o_row mw-50" name="external_rush" invisible="wage_type != 'hourly'">
+                    <field name="external_rush" nolabel="1"/>
+                    <span>/ hour</span>
+                </div>
+                <!-- ...........//........ -->
+                <label for="threshold" invisible="wage_type != 'hourly'"/>
+                <div class="o_row mw-50" name="threshold" invisible="wage_type != 'hourly'">
+                    <field name="threshold" nolabel="1"/>
+                    <span>/ hour</span>
+                </div>
+
+
+            </xpath>
+            <xpath expr="//label[@for='wage']" position="after">
+
+                <label for="acc_block" invisible="wage_type != 'hourly'"/>
+                <div class="o_row mw-50" name="helper_wage" invisible="wage_type != 'hourly'">
+                    <field name="acc_block" nolabel="1"/>
+                    <span>/ hour</span>
+                </div>
+                <label for="wall_tiles" invisible="wage_type != 'hourly'"/>
+                <div class="o_row mw-50" name="helper_wage" invisible="wage_type != 'hourly'">
+                    <field name="wall_tiles" nolabel="1"/>
+                    <span>/ hour</span>
+                </div>
+                <label for="mosaic" invisible="wage_type != 'hourly'"/>
+                <div class="o_row mw-50" name="helper_wage" invisible="wage_type != 'hourly'">
+                    <field name="mosaic" nolabel="1"/>
+                    <span>/ hour</span>
+                </div>
+                <label for="layout_tiles" invisible="wage_type != 'hourly'"/>
+                <div class="o_row mw-50" name="helper_wage" invisible="wage_type != 'hourly'">
+                    <field name="layout_tiles" nolabel="1"/>
+                    <span>/ hour</span>
+                </div>
+                <label for="skirting" invisible="wage_type != 'hourly'"/>
+                <div class="o_row mw-50" name="helper_wage" invisible="wage_type != 'hourly'">
+                    <field name="skirting" nolabel="1"/>
+                    <span>/ hour</span>
+                </div>
+                 <!-- ...........//........ -->
+                <label for="point_hour" invisible="wage_type != 'hourly'"/>
+                <div class="o_row mw-50" name="point_hour" invisible="wage_type != 'hourly'">
+                    <field name="point_hour" nolabel="1"/>
+                    <span>/ hour</span>
+                </div>
+                <!-- ...........//........ -->
+                <label for="point_s" invisible="wage_type != 'hourly'"/>
+                <div class="o_row mw-50" name="point_s" invisible="wage_type != 'hourly'">
+                    <field name="point_s" nolabel="1"/>
+                    <span>/ hour</span>
+                </div>
+                <!-- ...........//........ -->
+                <label for="point_external" invisible="wage_type != 'hourly'"/>
+                <div class="o_row mw-50" name="point_external" invisible="wage_type != 'hourly'">
+                    <field name="point_external" nolabel="1"/>
+                    <span>/ hour</span>
+                </div>
+
+            </xpath>
+
+            <xpath expr="//div[@name='wage']" position="after">
+                 <label for="housing" invisible="wage_type != 'monthly'"/>
+                <div class="o_row mw-50" name="emp_wage" invisible="wage_type != 'monthly'">
+                    <field name="housing" nolabel="1"/>
+                    <span>/ month</span>
+                </div>
+                <label for="transportation" invisible="wage_type != 'monthly'"/>
+                <div class="o_row mw-50" name="emp_wage" invisible="wage_type != 'monthly'">
+                    <field name="transportation" nolabel="1"/>
+                    <span>/ month</span>
+                </div>
+                <label for="other_allowances" invisible="wage_type != 'monthly'"/>
+                <div class="o_row mw-50" name="emp_wage" invisible="wage_type != 'monthly'">
+                    <field name="other_allowances" nolabel="1"/>
+                    <span>/ month</span>
+                </div>
+                <label for="bonus" invisible="wage_type != 'monthly'"/>
+                <div class="o_row mw-50" name="emp_wage" invisible="wage_type != 'monthly'">
+                    <field name="bonus" nolabel="1"/>
+                    <span>/ month</span>
+                </div>
+
+  </xpath>
+            <xpath expr="//group[@name='notes_group']" position="before">
+                <group string="Extra">
+                    <group class="o_row mw-50">
+                    <field name="testing_period"/><span>/ month</span></group>
+                </group>
+            </xpath>
+            <xpath expr="//form[1]/sheet[1]/group[@name='top_info']/group[@name='top_info_right']/field[@name='structure_type_id'][2]" position="after">
+                 <field name="domain_struct" invisible="1"/>
+                    <field name="struct_id" domain="[('id','in',domain_struct)]"/>
+              </xpath>
+        </field>
+    </record>
+</odoo>

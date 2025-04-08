@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="worker_transfer_report_template">
+        <t t-call="web.basic_layout">
+            <div class="page">
+                <h2 style="text-align: center;">Worker Transfer Report</h2>
+                <table class="table table-bordered" style="width: 100%; border-collapse: collapse;">
+                    <thead>
+                        <tr>
+                            <th>Code</th>
+                            <th>Name</th>
+                            <th>Designation</th>
+                            
+                            <th colspan="2">FROM</th>
+                            <th colspan="2">TO</th>
+                        </tr>
+                        <tr>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th>Project</th>
+                            <th>Foreman Name</th>
+                            <th>Project</th>
+                            <th>Foreman Name</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Loop through worker data -->
+                        <t t-foreach="docs" t-as="doc">
+                            <tr>
+                                <td t-esc="doc.employee_id.job_code"/>
+                                <td t-esc="doc.employee_id.name"/>
+                                <td t-esc="doc.employee_id.job_id.name"/>
+                               
+                                <td t-esc="doc.from_work_id.name"/>
+                            
+                                <td>
+                    <t t-foreach="doc.foreman_current" t-as="project">
+                         <span><t t-esc="project.name"/>,</span>
+                    </t>
+                </td>
+                                <td t-esc="doc.work_id.name"/>
+                                <td>
+                                 <t t-foreach="doc.foreman_new" t-as="pro">
+                        <span><t t-esc="pro.name"/>,</span>
+                       
+                    </t>
+                </td>
+                            </tr>
+                        </t>
+                    </tbody>
+                </table>
+            </div>
+        </t>
+
+    </template>
+
+     <record id="report_transfer" model="ir.actions.report">
+        <field name="name">Worker transfer report</field>
+        <field name="model">employee.transfer</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">hr_edit.worker_transfer_report_template</field>
+        <field name="report_file">hr_edit.worker_transfer_report_template</field>
+        <field name="binding_model_id" ref="model_employee_transfer"/>
+        <field name="binding_type">report</field>
+
+    </record>
+</odoo>

@@ -1,0 +1,161 @@
+<odoo>
+    <data noupdate="0">
+        <record id="helper_structure_bbc" model="hr.payroll.structure">
+            <field name="name">Helper</field>
+            <field name="type_id" ref="hr_contract.structure_type_employee"/>
+            <field name="country_id" eval="False"/>
+            <field name="active">True</field>
+        </record>
+        <!--                        RULE                                        -->
+        <record id="hr_rule_allotted_bonus_helper" model="hr.salary.rule">
+            <field name="name">allotted bonus</field>
+            <field name="sequence" eval="5"/>
+            <field name="code">allottedbonushelper</field>
+            <field name="category_id" ref="hr_payroll.ALW"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = payslip.allotted_bonus if payslip.allotted_bonus else 0</field>
+            <field name="struct_id" ref="hr_edit.helper_structure_bbc"/>
+        </record>
+         <record id="hr_rule_hold_amount_add_helper" model="hr.salary.rule">
+            <field name="name">Hold +</field>
+            <field name="sequence" eval="23"/>
+            <field name="code">HOLDB</field>
+            <field name="category_id" ref="hr_payroll.ALW"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = payslip.hold_amount_add if payslip.hold_amount_add else 0
+            </field>
+            <field name="struct_id" ref="hr_edit.helper_structure_bbc"/>
+        </record>
+        <record id="hr_rule_hold_amount_ded_helper" model="hr.salary.rule">
+            <field name="name">Hold -</field>
+            <field name="sequence" eval="21"/>
+            <field name="code">HOLDDH</field>
+            <field name="category_id" ref="hr_payroll.DED"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = payslip.hold_amount_ded if payslip.hold_amount_ded else 0
+            </field>
+            <field name="struct_id" ref="hr_edit.helper_structure_bbc"/>
+        </record>
+        <record id="hr_rule_safety_helper" model="hr.salary.rule">
+            <field name="name">Deductions helper</field>
+            <field name="sequence" eval="4"/>
+            <field name="code">safetyHELPER</field>
+            <field name="category_id" ref="hr_payroll.DED"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = payslip.safety_fines if payslip.safety_fines else 0</field>
+            <field name="struct_id" ref="hr_edit.helper_structure_bbc"/>
+        </record>
+        <record id="hr_rule_bonus_non" model="hr.salary.rule">
+            <field name="name">Operator bonus</field>
+            <field name="sequence" eval="4"/>
+            <field name="code">operatorabsence</field>
+            <field name="category_id" ref="hr_payroll.ALW"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = payslip.operator_absent_hour if payslip.operator_absent_hour else 0
+            </field>
+            <field name="struct_id" ref="hr_edit.helper_structure_bbc"/>
+        </record>
+        <record id="hr_rule_bonus" model="hr.salary.rule">
+            <field name="name">Non-absence bonus HELPER</field>
+            <field name="sequence" eval="4"/>
+            <field name="code">Nonabsence</field>
+            <field name="category_id" ref="hr_payroll.ALW"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = payslip.non_absent_hour if payslip.non_absent_hour else 0
+            </field>
+            <field name="struct_id" ref="hr_edit.helper_structure_bbc"/>
+        </record>
+        <record id="hr_rule_other_bouns_helper" model="hr.salary.rule">
+            <field name="name">OTHER Bouns helper</field>
+            <field name="sequence" eval="16"/>
+            <field name="code">OTHERBH</field>
+            <field name="category_id" ref="hr_payroll.ALW"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = payslip.other_bonus if payslip.other_bonus else 0</field>
+            <field name="struct_id" ref="hr_edit.helper_structure_bbc"/>
+        </record>
+
+        <record id="hr_rule_other_ded_HELPER" model="hr.salary.rule">
+            <field name="name">OTHER DED Helper</field>
+            <field name="sequence" eval="17"/>
+            <field name="code">OTHERDH</field>
+            <field name="category_id" ref="hr_payroll.DED"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = payslip.other_dec if payslip.other_dec else 0</field>
+            <field name="struct_id" ref="hr_edit.helper_structure_bbc"/>
+        </record>
+        <record id="hr_rule_helper_hour_holiday" model="hr.salary.rule">
+            <field name="name">Hour public holiday</field>
+            <field name="sequence" eval="10"/>
+            <field name="code">publicholidayh</field>
+            <field name="category_id" ref="hr_payroll.ALW"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = payslip.hour_holiday*contract.hourly_wage if payslip.hour_holiday else 0</field>
+            <field name="struct_id" ref="hr_edit.helper_structure_bbc"/>
+        </record>
+        <!--     salary advance   -->
+        <record id="hr_rule_salary_helper" model="hr.salary.rule">
+            <field name="name">Salary Advance</field>
+            <field name="sequence" eval="8"/>
+            <field name="code">salh</field>
+            <field name="category_id" ref="hr_payroll.DED"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = payslip.sal_adv if payslip.sal_adv else 0</field>
+            <field name="struct_id" ref="hr_edit.helper_structure_bbc"/>
+        </record>
+           <!--       helper & mason  Hour-->
+        <record id="hr_rule_helper_and_mason_hour_2" model="hr.salary.rule">
+            <field name="name">Hours</field>
+            <field name="sequence" eval="13"/>
+            <field name="code">MHMH</field>
+            <field name="category_id" ref="hr_payroll.BASIC"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = (payslip.helper_hour * contract.hourly_wage)</field>
+            <field name="struct_id" ref="hr_edit.helper_structure_bbc"/>
+        </record>
+        <!--       Wage  Helper-->
+        <record id="hr_rule_wage_helper" model="hr.salary.rule">
+            <field name="name">Wage Helper</field>
+            <field name="sequence" eval="45"/>
+            <field name="code">WH</field>
+            <field name="category_id" ref="hr_payroll.BASIC"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = MHMH - ABSENTH</field>
+            <field name="struct_id" ref="hr_edit.helper_structure_bbc"/>
+        </record>
+         <!--       absent mason-->
+        <record id="hr_rule_absent_ded_helper" model="hr.salary.rule">
+            <field name="name">Absent</field>
+            <field name="sequence" eval="20"/>
+            <field name="code">ABSENTH</field>
+            <field name="category_id" ref="hr_payroll.DED"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = payslip.two_day_ded_mason * contract.hourly_wage</field>
+            <field name="struct_id" ref="hr_edit.helper_structure_bbc"/>
+        </record>
+        <record id="hr_rule_total_helper" model="hr.salary.rule">
+            <field name="name">Total Helper</field>
+            <field name="sequence" eval="60"/>
+            <field name="code">NET</field>
+            <field name="category_id" ref="hr_payroll.BASIC"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = WH + (Nonabsence + publicholidayh + operatorabsence +OTHERBH+allottedbonushelper+HOLDB)- (safetyHELPER+OTHERDH+salh+HOLDDH)
+            </field>
+            <field name="struct_id" ref="hr_edit.helper_structure_bbc"/>
+        </record>
+    </data>
+</odoo>

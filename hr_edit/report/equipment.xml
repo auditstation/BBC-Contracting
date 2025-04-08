@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_equipment_data">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-set="lang" t-value="doc.employee_id.lang"/>
+                <t t-call="web.external_layout">
+                    <t t-set="o" t-value="doc.with_context(lang=lang)"/>
+                    <div class="mt-5 clearfix">
+                        <div class="page mb-4">
+
+                            <h2 class="text-center">
+                                <span>Equipment</span>
+                            </h2>
+                            <div class="oe_structure"/>
+                            <div class="row"/>
+                            <div t-attf-class="#{'col-auto col-12 mw-100' if report_type != 'html' else 'col'} mb-2" name="data">
+                                <table class="table table-sm o_main_table table-borderless">
+                                    <tr>
+                                        <td>
+                                            <span class="text-bold">DATE:</span>
+
+                                            <span style="text-align: center; display: inline-block; width:40%; border:1px solid black;" t-esc="datetime.datetime.now().strftime('%Y-%m-%d')"/>
+
+                                            <br/>
+                                            <span class="text-bold">Name:</span>
+
+                                            <span t-field="doc.name"/>
+
+
+                                        </td>
+
+
+                                    </tr>
+
+                                </table>
+                            </div>
+                            <br/>
+                            <div class="oe_structure"/>
+
+                            <table class="table table-sm o_main_table table-border">
+                                <thead>
+                                    <tr>
+                                        <th colspan="2" class="text-center">Equipment INFORMATION</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                
+                                    <tr>
+                                        <td>EMPLOYEE</td>
+                                        <td>
+                                            <span t-out="o.employee_id.name"/>
+
+                                        </td>
+                                    </tr>
+                                       <tr>
+                                        <td>Employee Code</td>
+                                        <td name="td_code">
+                                            <span t-out="o.employee_id.job_code"/>
+
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>Equipment Category</td>
+                                        <td>
+                                            <span t-out="o.category_id.name"/>
+
+                                        </td>
+                                    </tr>
+                                  
+                                    <tr>
+                                        <td>Assign Date</td>
+                                        <td>
+                                            <span t-out="o.assign_date"/>
+
+                                        </td>
+                                    </tr>
+                                    
+                                    <tr>
+                                        <td>Dismissed Date</td>
+                                        <td>
+                                            <span t-out="o.dismissed_date"/>
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Branch </td>
+                                        <td>
+                                            <span t-out="o.employee_id.branch"/>
+
+                                        </td>
+                                    </tr>
+                                     <tr>
+                                        <td>MOL#</td>
+                                        <td>
+                                            <span t-out="o.employee_id.job_title_visa"/>
+
+                                        </td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                            <div class="oe_structure"/>
+
+                            <div class="oe_structure"/>
+                            <div><h5><u>Employee Signature:</u></h5>
+                           <span>______________________________________</span>
+                            </div>
+                            <br/>
+                            <div class="oe_structure"/>
+
+                            <div class="mt-5">
+                                <table class="table table-sm o_main_table table-borderless">
+                                <tr>
+                                    <td class="text-start">
+                                        <span>Prepared By</span>
+                                    </td>
+                                    <td class="text-end">
+                                        <span>Approved By</span>
+
+                                    </td>
+
+                                </tr>
+                            </table>
+                            </div>
+
+
+                        </div>
+                    </div>
+
+                </t>
+            </t>
+        </t>
+    </template>
+
+<record id="report_eqiupment" model="ir.actions.report">
+
+<field name="name">Equipment Form</field>
+<field name="model">maintenance.equipment</field>
+<field name="report_type">qweb-pdf</field>
+<field name="report_name">hr_edit.report_equipment_data</field>
+<field name="report_file">hr_edit.report_equipment_data</field>
+<field name="binding_model_id" ref="model_maintenance_equipment"/>
+<field name="binding_type">report</field>
+
+</record>
+</odoo>

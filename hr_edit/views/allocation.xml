@@ -1,0 +1,194 @@
+<?xml version="1.0"?>
+<odoo>
+    <!--                            Search                  -->
+    <record id="view_allocation_search" model="ir.ui.view">
+        <field name="name">Allocation</field>
+        <field name="model">work.allocation</field>
+        <field name="arch" type="xml">
+            <search string="Allocation search">
+                <field name="job_code"/>
+                <field name="employee_id"/>
+                <field name="date"/>
+                <field name="current_project"/>
+                <filter name="filter_date" string="Date"
+                        domain="[('date', '=', context_today().strftime('%Y-%m-%d'))]"/>
+                <separator/>
+                <filter string="Archived" name="inactive" domain="[('active', '=', False)]"/>
+                <separator/>
+                <filter string="Not current project" name="nonproject" domain="[('current_project', '=', False)]"/>
+                <group expand='0' string='Group by...'>
+                    <filter string='Date' name="group_by_created_date" context="{'group_by': 'date'}"/>
+                    <filter string='Project' name="group_by_category" context="{'group_by': 'current_project'}"/>
+
+                </group>
+            </search>
+        </field>
+    </record>
+
+
+    <!--                            Tree                    -->
+    <record id="allocation_tree_view" model="ir.ui.view">
+        <field name="name">work.allocation.tree</field>
+        <field name="model">work.allocation</field>
+        <field name="arch" type="xml">
+            <tree create="0" editable="top" decoration-danger="not current_project">
+                <field name="locked" nolabel="1" invisible="1" column_invisible="1"/>
+                <button class="badge rounded-pill text-bg-danger float-center fs-6 border-0 fa fa-lock pe-none"
+                        string="Lock" invisible="not locked" name="test" type="object"/>
+                <button string="Lock" invisible="locked" name="lock" type="object" groups="base.group_system"/>
+                <button string="Un-Lock" invisible="not locked" name="un_lock" type="object"
+                        groups="base.group_system"/>
+                <field name="employee_id" readonly="locked"/>
+                <field name="job_code" readonly="locked"/>
+                <field name="designation" optional="show" readonly="locked"/>
+                <field name="level" optional="show" readonly="locked"/>
+                <field name="current_project" optional="show" readonly="locked"/>
+                <field name="leave" optional="show" readonly="locked"/>
+                <field name="date" optional="show" readonly="locked"/>
+            </tree>
+        </field>
+    </record>
+
+    <!--                            Form                       -->
+    <record id="work_allocation_form_view" model="ir.ui.view">
+        <field name="name">work.allocation.form</field>
+        <field name="model">work.allocation</field>
+        <field name="arch" type="xml">
+            <form string="Allocation">
+                <sheet>
+                    <group>
+                        <field name="date" readonly="1"/>
+                        <field name="employee_id" readonly="1"/>
+                        <field name="job_code" readonly="1"/>
+                        <field name="designation" readonly="1"/>
+                        <field name="level" readonly="1"/>
+                        <field name="current_project" readonly="1"/>
+                    </group>
+
+
+                </sheet>
+                <div class="o_attachment_preview"/>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" groups="base.group_user"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+
+            </form>
+        </field>
+    </record>
+
+
+    <!--                               Kanban                  -->
+    <record id="work_allocation_kanban_view" model="ir.ui.view">
+        <field name="name">work.allocation.kanban.lead</field>
+        <field name="model">work.allocation</field>
+        <field name="priority" eval="1"/>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_small_column" default_group_by="current_project" archivable="false" sample="1"
+                    create="false" group_create="false">
+                <field name="current_project" readonly="1" invisible="1"/>
+                <field name="locked" invisible="1"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="oe_kanban_global_click oe_kanban_card d-flex flex-column">
+                            <div class="oe_kanban_content flex-grow-1">
+                                <div class="oe_kanban_details">
+                                    <strong class="o_kanban_record_title">
+                                        <field name="employee_id" readonly="locked"/>
+                                    </strong>
+
+                                </div>
+
+                                <div>
+                                    <field name="job_code" readonly="locked"/>
+                                </div>
+                                <div>
+                                    <field name="current_project" readonly="locked"/>
+                                </div>
+                                <div>
+                                    <field name="designation" readonly="locked"/>
+                                </div>
+                                <div>
+                                    <field name="level" readonly="locked"/>
+                                </div>
+
+                            </div>
+                            <div class="oe_kanban_footer">
+                                <div class="o_kanban_record_bottom">
+                                    <div class="oe_kanban_bottom_left">
+
+                                        <field name="date" readonly="locked"/>
+                                    </div>
+                                    <div>
+
+                                    </div>
+                                    <div class="oe_kanban_bottom_right">
+                                        <field name="locked" nolabel="1" invisible="1"/>
+                                        <button class="badge rounded-pill text-bg-danger float-center fs-6 border-0 fa fa-lock pe-none"
+                                                string="Lock" invisible="not locked" name="test" type="object"/>
+
+                                    </div>
+                                </div>
+                                <div class="clearfix"/>
+
+                            </div>
+                        </div>
+                    </t>
+
+                </templates>
+
+            </kanban>
+        </field>
+    </record>
+
+    <!--                               Pivot                  -->
+    <record id="view_work_allocation_pivot" model="ir.ui.view">
+        <field name="name">work.allocation.pivot</field>
+        <field name="model">work.allocation</field>
+        <field name="arch" type="xml">
+            <pivot string="Allocation" sample="1">
+                <field name="date" interval="day" type="row"/>
+                <field name="current_project" type="row"/>
+                <field name="employee_id" type="col"/>
+                <field name="job_code" type="col"/>
+            </pivot>
+        </field>
+    </record>
+
+    <!--                               Graph                  -->
+    <record id="work_allocation_view_graph" model="ir.ui.view">
+        <field name="name">work.allocation.view.graph</field>
+        <field name="model">work.allocation</field>
+        <field name="arch" type="xml">
+            <graph string="Allocation" sample="1">
+                <field name="employee_id"/>
+                <field name="job_code"/>
+                <field name="current_project"/>
+            </graph>
+        </field>
+    </record>
+
+
+    <record id="employee_work_allocation_action" model="ir.actions.act_window">
+        <field name="name">Allocations</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">work.allocation</field>
+        <field name="context">{'search_default_filter_date': 1}</field>
+        <field name="view_mode">tree,form,kanban,pivot,graph</field>
+        <field name="search_view_id" ref="view_allocation_search"/>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Create a new Allocation.
+            </p>
+        </field>
+    </record>
+    <menuitem id="employee_transfer_menu_allocation"
+              parent="hr_edit.employee_transfer_menu_open_transfer"
+              name="Allocation"
+              sequence="1"
+              action="hr_edit.employee_work_allocation_action"
+              groups="hr.group_hr_manager"
+
+    />
+</odoo>

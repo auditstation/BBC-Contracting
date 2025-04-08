@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_salary_advance">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-set="lang" t-value="doc.employee_id.lang"/>
+                <t t-call="web.external_layout">
+                    <t t-set="o" t-value="doc.with_context(lang=lang)"/>
+                    <div class="mt-5 clearfix">
+                        <div class="page mb-4">
+
+                            <h2 class="text-center">
+                                <span>CASH PAYMENT VOUCHER</span>
+                            </h2>
+                            <div class="oe_structure"/>
+                            <div class="row"/>
+                            <div t-attf-class="#{'col-auto col-12 mw-100' if report_type != 'html' else 'col'} mb-2" name="data">
+                                <table class="table table-sm o_main_table table-borderless">
+                                    <tr>
+                                        <td>
+                                            <span class="text-bold">DATE:</span>
+
+                                            <span t-field="doc.date"/>
+                                            <br/>
+                                            <span class="text-bold">REF NO:</span>
+
+                                            <span t-field="doc.name"/>
+
+
+                                        </td>
+
+
+                                    </tr>
+
+                                </table>
+                            </div>
+                            <br/>
+                            <div class="oe_structure"/>
+
+                            <table class="table table-sm o_main_table table-border">
+                                <thead>
+                                    <tr>
+                                        <th colspan="2" class="text-center">EMPLOYEE INFORMATION</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    <tr>
+                                        <td>Employee Name</td>
+                                        <td name="td_name">
+                                            <span t-out="o.employee_id.name"/>
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Employee Code</td>
+                                        <td name="td_code">
+                                            <span t-out="o.employee_id.job_code"/>
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Designation</td>
+                                        <td name="td_des">
+                                            <span t-out="o.employee_id.job_title_visa"/>
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Nationality</td>
+                                        <td name="td_na">
+                                            <span t-out="o.employee_id.country_id.name"/>
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Branch </td>
+                                        <td name="td_company">
+                                            <span t-out="o.employee_id.branch"/>
+
+                                        </td>
+                                    </tr>
+                                     <tr>
+                                        <td>MOL#</td>
+                                        <td name="td_company">
+                                            <span t-out="o.employee_id.job_title_visa"/>
+
+                                        </td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                            <div class="oe_structure"/>
+
+                            <table class="table table-sm o_main_table table-border">
+                                <thead>
+                                    <tr>
+                                        <th colspan="2" class="text-center">REQUEST DETAILS</th>
+                                    </tr>
+                                    <th name="th_type" class="text-center">
+                                        <span>Details</span>
+                                    </th>
+                                    <th name="th_amount" class="text-center">
+                                        <span>AED</span>
+                                    </th>
+                                </thead>
+                                <tbody>
+
+
+                                    <tr>
+                                        <td name="td_reason_selection">
+                                            <t t-esc="dict(o.fields_get(allfields=['reason_selection'])['reason_selection']['selection'])[o.reason_selection]"/>
+                                            
+
+                                        </td>
+                                        <td name="td_amount">
+                                            <span t-field="o.advance"/>
+
+                                        </td>
+
+
+                                    </tr>
+
+
+                                </tbody>
+                            </table>
+                            <br/>
+
+                            <table class="table table-sm o_main_table table-border">
+                                <tr>
+                                    <td colspan="5" class="text-start">
+                                        <span>AMOUNT IN WORDS:</span>
+                                    </td>
+                                    <td class="text-center">
+                                        <span t-field="o.amount_total_words"/>
+
+                                    </td>
+
+                                </tr>
+                            </table>
+                            <br/>
+                            <div class="oe_structure"/>
+                            <div><h5><u>Employee Signature:</u></h5>
+                            <t t-if="o.employee_signature">
+                                <img t-attf-src="/web/image/salary.advance/{{ o.id }}/employee_signature"/></t>
+                                <h5><u>Date</u></h5>
+                            </div>
+                            <br/>
+                            <div class="oe_structure"/>
+
+                            <div class="mt-5">
+                                <table class="table table-sm o_main_table table-borderless">
+                                <tr>
+                                    <td class="text-start">
+                                        <span>Prepared By</span>
+                                    </td>
+                                    <td class="text-end">
+                                        <span>Approved By</span>
+
+                                    </td>
+
+                                </tr>
+                            </table>
+                            </div>
+
+
+                        </div>
+                    </div>
+
+                </t>
+            </t>
+        </t>
+    </template>
+
+
+</odoo>

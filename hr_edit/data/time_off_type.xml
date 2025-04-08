@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="annual_leave" model="hr.leave.type">
+            <field name="name">Annual Leave</field>
+            <field name="leave_validation_type">manager</field>
+            <field name="request_unit">day</field>
+            <field name="requires_allocation">yes</field>
+            <field name="employee_requests">no</field>
+            <field name="allocation_validation_type">no</field>
+            <field name="allows_negative">no</field>
+        </record>
+        <record id="sick_leave" model="hr.leave.type">
+            <field name="name">Sick Leave</field>
+            <field name="leave_validation_type">manager</field>
+            <field name="request_unit">day</field>
+            <field name="requires_allocation">no</field>
+            <field name="allows_negative">no</field>
+        </record>
+        <record id="emergency_leave" model="hr.leave.type">
+            <field name="name">Emergency Leave</field>
+            <field name="leave_validation_type">manager</field>
+            <field name="request_unit">day</field>
+            <field name="requires_allocation">no</field>
+            <field name="allows_negative">no</field>
+        </record>
+    </data>
+</odoo>

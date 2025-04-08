@@ -1,0 +1,290 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="hr_employee_view_form_inherit" model="ir.ui.view">
+        <field name="name">hr.employee.view.form.inherit</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='job_id']" position="after">
+                <field name="job_code"/>
+                <field name="job_title_visa"/>
+            </xpath>
+            <xpath expr="//field[@name='work_email']" position="after">
+                <field name="location_id"/>
+                <field name="get_first"/>
+                <field name="number_allocation"/>
+                <field name="next_schedule_date"/>
+            </xpath>
+            <xpath expr="//field[@name='emergency_contact']" position="after">
+                <field name="relationship"/>
+                <!--                <field name="joining_date_first"/>-->
+                <!--                <field name="first_wage"/>-->
+            </xpath>
+            <xpath expr="//field[@name='tz']" position="after">
+                <field name="joining_date_first"/>
+                <field name="joining_contract"/>
+                <field name="first_wage"/>
+            </xpath>
+            <xpath expr="//field[@name='parent_id']" position="attributes">
+                <attribute name="string">Reporting to</attribute>
+            </xpath>
+            <xpath expr="//field[@name='coach_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='job_title']" position="before">
+                <h3>
+                    <div class="d-flex align-items-baseline">
+
+                        <field name="first_name" placeholder="First Name"/>
+                        <field name="middle_name" placeholder="Middle Name"/>
+
+
+                        <field name="last_name" placeholder="Last Name"/>
+
+                    </div>
+                    <div>
+                    <field name="arabic_name"/>
+                    </div>
+                </h3>
+
+            </xpath>
+
+
+            <xpath expr="//field[@name='bank_account_id']" position="after">
+
+                <field name="bank_name"/>
+                <field name="iban"/>
+                <field name="routing_no"/>
+            </xpath>
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button class="oe_stat_button" name="action_adv_view"
+                        type="object" icon="fa-money" groups="hr.group_hr_manager,hr.group_hr_user">
+                    <field name="adv_count" widget="statinfo" string="Advance"/>
+                </button>
+            </xpath>
+            <xpath expr="//page[@name='hr_settings']" position="before">
+                <page name="history" string="Employee Location History">
+                    <group>
+                        <button type="object" name="location_details" class="oe_highlight">Location History</button>
+                    </group>
+
+                </page>
+                <page name="paper" string="Employee Papers Information">
+                    <group>
+                        <group string="Visa Information">
+
+
+                        </group>
+                        <group string="Passport Information">
+
+                            <field name="passport_expire"/>
+
+
+                        </group>
+                        <group string="Emarites ID Information">
+                            <field name="eid_no"/>
+                            <field name="eid_expire"/>
+
+                        </group>
+                        <group string="UID Information">
+                            <field name="uid_no"/>
+                            <field name="uid_expire"/>
+
+
+                        </group>
+                        <group string="MOL Information">
+                            <field name="mol_no"/>
+                            <field name="mol_expire"/>
+
+
+                        </group>
+                        <group string="Medical Fitness Information">
+                            <field name="med_no"/>
+                            <field name="med_expire"/>
+
+
+                        </group>
+                        <group string="Driving License Information">
+                            <field name="drive_no"/>
+                            <field name="drive_expire"/>
+
+
+                        </group>
+                        <group string="Sponsorship">
+                            <field name="on_company_sponsorship" widget="radio" options="{'horizontal': True}"/>
+                            <field name="sponsor_name" invisible="on_company_sponsorship == 'yes'"/>
+                            <field name="branch" invisible="on_company_sponsorship == 'no'"/>
+                            <field name="nos_name" invisible="1"/>
+                            <field name="has_nos" widget="work_permit_upload" filename="nos_name"
+                                   invisible="on_company_sponsorship == 'yes'"/>
+                            <field name="sponsor_trade_name" invisible="1"/>
+                            <field name="has_sponsor" widget="work_permit_upload" filename="sponsor_trade_name"
+                                   invisible="on_company_sponsorship == 'yes'"/>
+                        </group>
+                        <group string="Work Permit">
+                            <!--                            <separator name="has_work_permit" string="Work Permit"/>-->
+<!--                             <field name="visa_no"/> -->
+                            <field name="permit_no"/>
+<!--                             <field name="visa_expire"/> -->
+                            <field name="work_permit_expiration_date" readonly="True"/>
+                            <field name="work_permit_name" invisible="1"/>
+                            <field name="has_work_permit" widget="work_permit_upload" filename="work_permit_name"/>
+                        </group>
+                    </group>
+
+                </page>
+            </xpath>
+
+            <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='personal_information']/group[1]/group[not(@name)][3]/separator[@name='has_work_permit']"
+                   position="attributes">
+                <attribute name="invisible">True</attribute>
+            </xpath>
+            <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='personal_information']/group[1]/group[not(@name)][3]/field[@name='permit_no']"
+                   position="attributes">
+                <attribute name="invisible">True</attribute>
+            </xpath>
+            <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='personal_information']/group[1]/group[not(@name)][3]/field[@name='work_permit_expiration_date']"
+                   position="attributes">
+                <attribute name="invisible">True</attribute>
+            </xpath>
+            <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='personal_information']/group[1]/group[not(@name)][3]/field[@name='has_work_permit']"
+                   position="attributes">
+                <attribute name="invisible">True</attribute>
+                <attribute name="widget">binary</attribute>
+            </xpath>
+
+            <xpath expr="//page[@name='paper']/group[1]/group[1]" position="inside">
+                <xpath expr="//field[@name='visa_no']" position="move"/>
+                <xpath expr="//field[@name='visa_expire']" position="move"/>
+            </xpath>
+
+            <xpath expr="//field[@name='passport_id']" position="attributes">
+                <attribute name="force_save">1</attribute>
+                <attribute name="readonly">True</attribute>
+            </xpath>
+            <xpath expr="//page[@name='paper']//group[2]//field[@name='passport_expire']" position="before">
+                <xpath expr="//field[@name='passport_id']" position="move"/>
+
+            </xpath>
+           
+            <xpath expr="//field[@name='address_id']" position="after">
+                <field name="type_work"/>
+            </xpath>
+            <xpath expr="//page[@name='hr_settings']" position="attributes">
+                <attribute name="invisible">True</attribute>
+            </xpath>
+            <xpath expr="//page[2][@name='public']" position="inside">
+                <group>
+                    <group string="Status" name="active_group">
+                        <field name="employee_type"/>
+                        <field name="user_id" string="Related User"
+                               domain="[('company_ids', 'in', company_id), ('share', '=', False)]"
+                               context="{'default_create_employee_id': id}" widget="many2one_avatar_user"/>
+                    </group>
+                    <group string="Attendance/Point of Sale" name="identification_group">
+                        <field name="pin" string="PIN Code"/>
+                        <label for="barcode"/>
+                        <div class="o_row">
+                            <field name="barcode"/>
+                            <button string="Generate" class="btn btn-link" type="object" name="generate_random_barcode"
+                                    invisible="barcode"/>
+                            <button name="166" string="Print Badge" class="btn btn-link" type="action"
+                                    invisible="not barcode"/>
+                        </div>
+                    </group>
+                    <group string="Payroll" name="payroll_group" invisible="1">
+                    </group>
+                    <group name="application_group" string="Application Settings" invisible="1"/>
+                    <xpath expr="//page[@name='contact_addresses']" position="before">
+                        <xpath expr="//page[@name='sales_purchases']" position="move"/>
+                    </xpath>
+                </group>
+            </xpath>
+            <xpath expr="//page[@name='personal_information']" position="before">
+                <xpath expr="//page[@name='paper']" position="move"/>
+            </xpath>
+            <xpath expr="//page[@name='personal_information']" position="after">
+                <xpath expr="//page[@name='public']" position="move"/>
+            </xpath>
+            <xpath expr="//page[@name='history']" position="after">
+                <xpath expr="//page[@name='skills_resume']" position="move"/>
+                <xpath expr="//page[@name='received_badges']" position="move"/>
+            </xpath>
+        </field>
+    </record>
+    <record id="hr_employee_view_form_inherit_main" model="ir.ui.view">
+        <field name="name">hr.employee.view.maintenance.inherit</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr_maintenance.hr_employee_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div/button/field[@name='equipment_count']" position="replace">
+
+                <div>
+                    <field name="equipment_count" string="Active" widget="statinfo"/>
+                </div>
+                <div>
+                    <field name="equipment_non_count" string=",Non" widget="statinfo"/>
+                </div>
+            </xpath>
+
+
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="hr_employee_resigned_filter">
+        <field name="name">hr.employee.form.filter.inherit</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_filter"/>
+        <field name="arch" type="xml">
+            <field name="name" position="before">
+                <field name="job_code"/>
+            </field>
+        </field>
+    </record>
+    <record id="job_history_data" model="ir.actions.server">
+        <field name="name">Job History</field>
+        <field name="type">ir.actions.server</field>
+        <field name="model_id" ref="model_hr_employee"/>
+        <field name="state">code</field>
+        <field name="code">action = model.job_details()</field>
+
+    </record>
+
+    <menuitem id="menu_user_order_status_view" name="Job History"
+              parent="hr.menu_hr_root"
+              action="job_history_data"
+              sequence="25"/>
+
+
+    <record id="view_partner_bank_form_inherit" model="ir.ui.view">
+        <field name="name">hr.employee.view.bank.inherit</field>
+        <field name="model">res.partner.bank</field>
+        <field name="inherit_id" ref="base.view_partner_bank_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='bank_id']" position="after">
+                <field name="iban"/>
+                <field name="routing_no"/>
+            </xpath>
+        </field>
+    </record>
+    <record id="resume_survey_line_view_file" model="ir.ui.view">
+        <field name="name">hr.resume.line.form</field>
+        <field name="model">hr.resume.line</field>
+        <field name="inherit_id" ref="hr_skills.resume_line_view_form"/>
+        <field eval="20" name="priority"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='display_type']" position="after">
+                <field name="file_cer"/>
+            </xpath>
+        </field>
+    </record>
+    <record id="start_up_data_server_action" model="ir.actions.server">
+        <field name="name">Launch Allocation</field>
+        <field name="type">ir.actions.server</field>
+        <field name="model_id" ref="model_hr_employee"/>
+        <field name="state">code</field>
+        <field name="code">action = records.start_up_data()</field>
+
+    </record>
+
+</odoo>

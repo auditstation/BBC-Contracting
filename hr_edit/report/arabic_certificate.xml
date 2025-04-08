@@ -1,0 +1,139 @@
+<odoo>
+   <record id="paperformat_certificate_report_arabic" model="report.paperformat">
+        <field name="name">Certificate Arabic</field>
+        <field name="default" eval="True"/>
+         <field name="default" eval="True"/>
+        <field name="format">custom</field>
+        <field name="page_height">297</field>
+        <field name="page_width">210</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">0</field>
+        <field name="margin_bottom">0</field>
+        <field name="margin_left">0</field>
+        <field name="margin_right">2</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">0</field>
+        <field name="dpi">85</field>
+    </record>
+<template id="employee_certificate_report_arabic">
+   <t t-call="web.basic_layout">
+           <t t-foreach="docs" t-as="doc">
+            
+        <t t-set="m" t-value="doc.country_id.with_context({'lang':'ar_SY'}).name"/>
+        <t t-set="j" t-value="doc.with_context({'lang':'ar_SY'}).job_title_visa"/>
+         <div class="page" t-attf-style="background-image:url({{'/hr_edit/static/src/img/dubai_re.jpg' if doc.branch == 'dubai' or doc.on_company_sponsorship == 'no'  else '/hr_edit/static/src/img/sharjah.jpg'}}); background-size:210mm 320mm; width:210mm; height:320mm; background-repeat:no-repeat;">
+     <t>
+                <div style="text-align:right; ">
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                     <br/>
+                      <br/>
+                     <br/>
+                     <br/>
+                      <br/>
+                      
+                      
+                      <span t-esc="datetime.datetime.now().strftime('%Y-%m-%d')"/> <span style="text-align: right; ">:التاريخ </span>
+
+                </div>
+                <div style="text-align:right; ">
+                    <strong style="text-align: right; ">:السادة</strong>
+                </div>
+                <div style="margin-top:20px; text-align:center; font-size:18px;  font-family: 'Times New Roman', serif; margin-right:15px;">
+                    <strong>الموضوع :شهادة راتب</strong>
+                </div>
+
+                <div style="text-align: right; margin-top:20px; font-size:16px; margin-left:30px;">
+                  <p style="text-align: right;  ">
+                    نفيد سيادتكم بأن السيد/السيدة
+                    <span t-field="doc.arabic_name"/>
+                     - الجنسية <span t-esc="m"/>
+                    ويحمل هوية رقم
+                   <span t-field="doc.eid_no"/> 
+                   
+                    <t t-if="doc.branch == 'dubai' or doc.on_company_sponsorship == 'no'">
+
+                    ويعمل لدينا في ب .ب . س لمقاولات البناء (ش.ذ.م.م) 
+                   
+                    </t>
+                         <t t-if="doc.branch == 'sharjah'">
+
+                    ويعمل لدينا في ب. ب . س لمقاولات البناء شركه الشخص الواحد (ذ.م.م) 
+                    
+                    </t>
+                             ولا يزال على
+رأس عمله بوظيفة
+                  
+
+
+                              
+               <span t-esc="j"/>
+                   <t t-if="doc.contract_ids">
+                  براتب شهري قدره
+                      <span t-field="doc.contract_ids[-1].contract_salary"/>
+                    درهم إماراتي شامل جميع
+البدلات الثابتة
+    </t>
+                </p>
+
+                <!-- Salary Details -->
+
+
+<t t-if="doc.contract_ids">
+                <div style="margin-top:25px; font-size:18px; text-align:center;">
+                      <span> <span style="text-align: right;"><strong>الراتب الإجمالي </strong>
+: </span> <span><t t-esc="doc.contract_ids[-1].contract_salary"/> درهم شهريا</span></span>
+                </div></t>
+
+                <div style="margin-top:40px; font-size:14px; text-align:right; ">
+                    <u><h4>:ملاحظات هامة</h4></u>
+                    <ol style="direction: rtl;">
+                        <li style="margin-right:10px;"> تم إصدار هذه الشهادة للموظف بناء ً على طلبه دون أدنى مسؤولية تجاه الشركة أو أي من ممثليها و/أو موظفيها.</li>
+                      <br></br>
+                        <li style="margin-right:10px;">مدة صالحية هذه الشهادة شهر واحد (1) من تاريخ الإصدار المطبوع.</li>
+                     <br></br>
+                        <li style="margin-right:10px;"> هذه الشهادة غير صالحة بدون ختم الشركة الأصلي والتوقيع الأصلي من قبل المفوض بالتوقيع .
+                        </li>
+                    </ol>
+
+                </div>
+                    <div style="margin-top:50px; font-size:14px; text-align:center;">   <p>وتفضلوا بقبول فائق التقدير والاحترام</p></div>
+
+                <div style="text-align:right; margin-top:60px; ">
+                    <p>
+                   <t t-if="doc.branch == 'dubai' or doc.on_company_sponsorship == 'no'">
+                            ب.ب.س لمقاولات البناء (ش.ذ.م.م) فرع دبي
+                         </t>                 
+                         <t t-if="doc.branch == 'sharjah'">(ب . ب . س مقاولات البناء شركه الشخص الواحد
+                         (ذ.م.م
+                         </t>
+                    </p>
+
+                </div>
+                </div>
+                </t>
+            </div>
+        </t>
+
+        </t>
+    </template>
+ <record id="report_arabic_certificate" model="ir.actions.report">
+        <field name="name">Arabic Salary Certificate</field>
+        <field name="model">hr.employee</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">hr_edit.employee_certificate_report_arabic</field>
+        <field name="report_file">hr_edit.employee_certificate_report_arabic</field>
+        <field name="binding_model_id" ref="model_hr_employee"/>
+        <field name="binding_type">report</field>
+    <field name="paperformat_id" ref="paperformat_certificate_report_arabic"/>
+
+    </record>
+
+</odoo>
+
