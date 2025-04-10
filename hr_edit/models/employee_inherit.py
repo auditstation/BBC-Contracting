@@ -79,8 +79,9 @@ class EmployeeInherit(models.Model):
     number_allocation = fields.Float()
     get_first = fields.Boolean()
 
-    def create_launch_allocation(self,period,active,msg):
+    def create_launch_allocation(self,period,active,msg,get_first=False):
         if period != 0  and self.joining_date_first and self.type_work:
+            self.get_first = get_first
             allocation = self.env['hr.leave.allocation'].sudo().create({
                         "name": self.name,
                         "date_from": date(date.today().year, date.today().month, 1),
@@ -108,9 +109,9 @@ class EmployeeInherit(models.Model):
                     complete_period / 12 / 30, rec.joining_date_first)
             msg_rem = _('Rem Allocation')
             if not rec.get_first:
-                rec.create_launch_allocation(period=allocation_period + rec.number_allocation,active=True,msg=msg_first)
+                rec.create_launch_allocation(period=allocation_period + rec.number_allocation,active=True,msg=msg_first,get_first=True)
             else:
-                rec.create_launch_allocation(period=allocation_period,active=False,msg=msg_first)
+                rec.create_launch_allocation(period=allocation_period,active=False,msg=msg_first,get_first=True)
                 rec.create_launch_allocation(period=rec.number_allocation,active=True,msg=msg_rem)
             if rec.next_schedule_date and rec.next_schedule_date <= date.today() and rec.type_work != 'staff':
                 rec.create_launch_allocation(period=allocation_period,active=True,msg=msg_leave)

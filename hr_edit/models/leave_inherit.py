@@ -21,7 +21,7 @@ class LeaveِAllocationInherit(models.Model):
                 [("holiday_status_id", "=", annual_leave),
                  ('employee_id', '=', employee),
                  ('state', '=', 'validate')])])
-            return True if all_alloc >= allocation_max else False
+            return True if all_alloc >= allocation_max and all_alloc != 0 and allocation_max != 0 else False
     
     @api.model_create_multi
     def create(self, vals_list):
