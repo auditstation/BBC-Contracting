@@ -293,22 +293,24 @@ class EmployeeInherit(models.Model):
                 mid =' '+vals.get('middle_name')+' ' if 'middle_name' in vals and type(vals.get('middle_name')) == type('') else ' '
                 vals['name'] = vals.get('first_name') + '' + str(mid) + '' + vals.get('last_name')
         employees = super().create(vals_list)
-        self.env['job.codes'].sudo().create({
-            'employee_id': employees.id,
-            'code': employees.job_code,
-            'job_id': employees.job_id.id,
-        })
-        self.env['job.history'].sudo().create({
-            'employee_id': employees.id,
-            'start_date': datetime.now(),
-            'state': 'current',
-            'current_value': employees.job_code,
-            'current_dis': employees.job_title})
-
+        employees.sudo().create_job_code_history()
         employees.sudo().generate_random_barcode()
-
         employees.sudo().create_work_allocation_new_employee()
         return employees
+
+    def create_job_code_history(self):
+        for i in self:
+            self.env['job.codes'].sudo().create({
+                'employee_id': i.id,
+                'code': i.job_code,
+                'job_id': i.job_id.id,
+            })
+            self.env['job.history'].sudo().create({
+                'employee_id': i.id,
+                'start_date': datetime.now(),
+                'state': 'current',
+                'current_value': i.job_code,
+                'current_dis': i.job_title})
 
     def write(self,vals_list):
         res = super(EmployeeInherit, self).write(vals_list)
