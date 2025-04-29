@@ -15,6 +15,15 @@ class DocumentInherit(models.Model):
                                copy=False,
                                help='Specify the job code.')
 
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            if 'employee_ref_id' in vals:
+                vals['job_code'] = self.env['job.codes'].sudo().search([('employee_id', '=', vals['employee_ref_id'])]).id
+            elif 'job_code' in vals: 
+                vals['employee_ref_id'] = self.env['job.codes'].sudo().search([('id', '=', vals['job_code'])]).employee_id.id
+    return super().create(vals_list)
+    
     @api.onchange('employee_ref_id')
     def onchange_code(self):
         if self.employee_ref_id:
