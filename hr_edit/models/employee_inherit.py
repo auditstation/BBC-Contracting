@@ -290,8 +290,8 @@ class EmployeeInherit(models.Model):
     def create(self, vals_list):
         for vals in vals_list:
             if vals.get('first_name'):
-                mid = vals.get('middle_name') if 'middle_name' in vals and type(vals.get('middle_name')) == type('') else ''
-                vals['name'] = vals.get('first_name') + ' ' + str(mid) + ' ' + vals.get('last_name')
+                mid =' '+vals.get('middle_name')+' ' if 'middle_name' in vals and type(vals.get('middle_name')) == type('') else ' '
+                vals['name'] = vals.get('first_name') + '' + str(mid) + '' + vals.get('last_name')
         employees = super().create(vals_list)
         self.env['job.codes'].sudo().create({
             'employee_id': employees.id,
@@ -473,8 +473,8 @@ class EmployeeInherit(models.Model):
     @api.onchange('first_name', 'middle_name', 'last_name')
     def _onchange_name(self):
         if self.first_name and self.last_name:
-            mid = self.middle_name if self.middle_name else ''
-            self.name = self.first_name + ' ' + str(mid) + ' ' + self.last_name
+            mid = ' ' + self.middle_name+ ' ' if self.middle_name else ' '
+            self.name = self.first_name + str(mid)  + self.last_name
 
     # @api.depends('contract_ids')
     # def _compute_joining_date(self):
