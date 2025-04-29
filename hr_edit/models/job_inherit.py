@@ -22,7 +22,7 @@ class DocumentInherit(models.Model):
                 vals['job_code'] = self.env['job.codes'].sudo().search([('employee_id', '=', vals['employee_ref_id'])]).id
             elif 'job_code' in vals: 
                 vals['employee_ref_id'] = self.env['job.codes'].sudo().search([('id', '=', vals['job_code'])]).employee_id.id
-    return super().create(vals_list)
+        return super().create(vals_list)
     
     @api.onchange('employee_ref_id')
     def onchange_code(self):
