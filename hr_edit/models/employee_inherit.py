@@ -13,9 +13,9 @@ class EmployeeInherit(models.Model):
 
     job_code = fields.Char(tracking=True)
 
-    first_name = fields.Char(required=1)
-    middle_name = fields.Char(required=0)
-    last_name = fields.Char(required=1)
+    first_name = fields.Char(required=True)
+    middle_name = fields.Char(required=False)
+    last_name = fields.Char(required=True)
     relationship = fields.Char()
     joining_date_first = fields.Date(string='Joining Date')
     joining_contract = fields.Date(string='Contract Date', compute='_compute_joining_date_first')

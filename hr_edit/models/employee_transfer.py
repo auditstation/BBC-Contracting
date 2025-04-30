@@ -38,7 +38,7 @@ class EmployeeTransfer(models.Model):
                               copy=False, required=True)
     foreman_new = fields.Many2many(related='work_id.foreman', string='New Project Foreman Name')
     from_work_id = fields.Many2one('work.location', string='Current Project',
-                                   copy=False, compute='_compute_from_work_id')
+                                   copy=False, compute='_compute_from_work_id',search='_search_from_work_id')
     foreman_current = fields.Many2many(related='from_work_id.foreman', string='Current Project Foreman Name')
     state = fields.Selection(
         [('draft', 'New'), ('cancel', 'Cancelled'), ('transfer', 'Transferred'),
@@ -119,6 +119,10 @@ class EmployeeTransfer(models.Model):
                 rec.from_work_id = location_current.current_project.id
             else:
                 rec.from_work_id = False
+
+    def _search_from_work_id(self, operator, value): 
+        records = self.env['work.location'].sudo().search([]).filtered(lambda l: l.name and str(value) in l.name.lower()) 
+        return [('id', 'in', records.ids)]
 
     @api.depends('work_id')
     def _compute_safety(self):
