@@ -35,34 +35,37 @@ class DocumentInherit(models.Model):
             self.employee_ref_id = self.env['job.codes'].sudo().search([('id', '=', self.job_code.id)]).employee_id.id
 
     def action_download_attachments_zip(self):
-        attachments =[]
+        employee_attachments = {}
         for rec in self:
-            for i in rec.doc_attachment_ids:
-                attachments.append(i)
+        name = f"{rec.job_code.code}_{rec.employee_ref_id.name}" if rec.job_code and rec.employee_ref_id else (
+        rec.job_code.code if rec.job_code else (
+        rec.employee_ref_id.name if rec.employee_ref_id else ''))
+        employee_attachments[name] = rec.doc_attachment_ids
         zip_buffer = io.BytesIO()
         with zipfile.ZipFile(zip_buffer, 'w', zipfile.ZIP_DEFLATED) as zip_file:
-            for attach in attachments:
-                file_content = base64.b64decode(attach.datas)
-                filename = attach.name or 'file.bin'
-                zip_file.writestr(filename, file_content)
-
+            for emp_name, attachments in employee_attachments.items():
+                for attach in attachments:
+                    file_content = base64.b64decode(attach.datas or b'')
+                    original_name = attach.name or 'file.bin'
+                    # Extract extension
+                    _, ext = os.path.splitext(original_name)
+                    ext = ext or '.bin'
+                    # Clean employee name for filenames (remove slashes, etc.)
+                    safe_emp_name = emp_name.replace('/', '_').replace('\\', '_').strip()
+                    filename = f"{safe_emp_name}_{attach.name}"
+                    # Write to zip
+                    zip_file.writestr(filename, file_content)
+        # Prepare the file
         zip_buffer.seek(0)
-        # Create a download URL by uploading the zip to ir.attachment
         zip_attachment = self.env['ir.attachment'].create({
-            'name': f"{'attachments'}.zip",
+            'name': "attachments_by_employee.zip",
             'type': 'binary',
             'datas': base64.b64encode(zip_buffer.read()),
             'res_model': self._name,
             'res_id': self[0].id,
             'mimetype': 'application/zip',
         })
-        # Use action to redirect to the file URL
-        download_url = f"/web/content/{zip_attachment.id}?download=true"
-        return {
-            "type": "ir.actions.act_url",
-            "url": download_url,
-            "target": "self",
-        }
+    
 
 
 class BankInherit(models.Model):
