@@ -37,10 +37,9 @@ class DocumentInherit(models.Model):
     def action_download_attachments_zip(self):
         employee_attachments = {}
         for rec in self:
-        name = f"{rec.job_code.code}_{rec.employee_ref_id.name}" if rec.job_code and rec.employee_ref_id else (
-        rec.job_code.code if rec.job_code else (
-        rec.employee_ref_id.name if rec.employee_ref_id else ''))
-        employee_attachments[name] = rec.doc_attachment_ids
+            name = f"{rec.job_code.code}_{rec.employee_ref_id.name}" if rec.job_code and rec.employee_ref_id else (
+            rec.job_code.code if rec.job_code else (rec.employee_ref_id.name if rec.employee_ref_id else ''))
+            employee_attachments[name] = rec.doc_attachment_ids
         zip_buffer = io.BytesIO()
         with zipfile.ZipFile(zip_buffer, 'w', zipfile.ZIP_DEFLATED) as zip_file:
             for emp_name, attachments in employee_attachments.items():
@@ -66,8 +65,6 @@ class DocumentInherit(models.Model):
             'mimetype': 'application/zip',
         })
     
-
-
 class BankInherit(models.Model):
     _inherit = "res.partner.bank"
     iban = fields.Char('IBAN')
