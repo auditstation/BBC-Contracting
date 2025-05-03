@@ -55,7 +55,7 @@ class PayslipXlsx(models.AbstractModel):
                                   emp.on_company_sponsorship == 'no' else 'MOL ID: 565128'
         sheet.merge_range('C1:E1', branch, bold_center_underline)
         sheet.merge_range('C2:E2', mol, bold_center_underline)
-        sheet.merge_range('C3:E3', 'PAYROLL FOR THE MONTH OF AUGUST 2024', bold_center_underline)
+        sheet.merge_range('C3:E3',f'PAYROLL FOR THE MONTH OF {payslips[0].date_to.strftime("%B %Y")}', bold_center_underline)
 
         # Header for employee information
         sheet.merge_range('A6:A7', 'Sl.No', grey_background)
