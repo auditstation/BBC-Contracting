@@ -7,7 +7,16 @@ from dateutil.relativedelta import relativedelta
 
 _logger = logging.getLogger(__name__)
 
+class ResPartnerBank(models.Model):
+    _inherit = 'res.partner.bank'
 
+    @api.model_create_multi
+    def create(self, vals_list):
+        res = super().create(vals_list)
+        for i in res:
+            if i.partner_id and self.env.context.get('import_file'):
+                i.partner_id.employee_ids[0].bank_account_id = i.id
+        return res
 class EmployeeInherit(models.Model):
     _inherit = 'hr.employee'
 
