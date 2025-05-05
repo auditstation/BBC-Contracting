@@ -71,10 +71,16 @@
                 </page>
                 <page name="paper" string="Employee Papers Information">
                     <group>
-                        <group string="Visa Information">
-
-
+                        <group string="Sponsorship">
+                            <field name="on_company_sponsorship" widget="radio" options="{'horizontal': True}"/>
+                            <field name="sponsor_name" invisible="on_company_sponsorship == 'yes'"/>
+                            <field name="branch" invisible="on_company_sponsorship == 'no'"/>
+                            <field name="nos_name" invisible="1"/>
+                            <field name="has_nos" widget="work_permit_upload" filename="nos_name" invisible="on_company_sponsorship == 'yes'"/>
+                            <field name="sponsor_trade_name" invisible="1"/>
+                            <field name="has_sponsor" widget="work_permit_upload" filename="sponsor_trade_name" invisible="on_company_sponsorship == 'yes'"/>
                         </group>
+                       
                         <group string="Passport Information">
 
                             <field name="passport_expire"/>
@@ -86,10 +92,11 @@
                             <field name="eid_expire"/>
 
                         </group>
-                        <group string="UID Information">
+                        <group string="VISA File Information">
                             <field name="uid_no"/>
                             <field name="uid_expire"/>
-
+                             <field name="visa_no"/>
+                            <field name="visa_expire"/>
 
                         </group>
                         <group string="MOL Information">
@@ -97,29 +104,6 @@
                             <field name="mol_expire"/>
 
 
-                        </group>
-                        <group string="Medical Fitness Information">
-                            <field name="med_no"/>
-                            <field name="med_expire"/>
-
-
-                        </group>
-                        <group string="Driving License Information">
-                            <field name="drive_no"/>
-                            <field name="drive_expire"/>
-
-
-                        </group>
-                        <group string="Sponsorship">
-                            <field name="on_company_sponsorship" widget="radio" options="{'horizontal': True}"/>
-                            <field name="sponsor_name" invisible="on_company_sponsorship == 'yes'"/>
-                            <field name="branch" invisible="on_company_sponsorship == 'no'"/>
-                            <field name="nos_name" invisible="1"/>
-                            <field name="has_nos" widget="work_permit_upload" filename="nos_name"
-                                   invisible="on_company_sponsorship == 'yes'"/>
-                            <field name="sponsor_trade_name" invisible="1"/>
-                            <field name="has_sponsor" widget="work_permit_upload" filename="sponsor_trade_name"
-                                   invisible="on_company_sponsorship == 'yes'"/>
                         </group>
                         <group string="Work Permit">
                             <!--                            <separator name="has_work_permit" string="Work Permit"/>-->
@@ -130,6 +114,21 @@
                             <field name="work_permit_name" invisible="1"/>
                             <field name="has_work_permit" widget="work_permit_upload" filename="work_permit_name"/>
                         </group>
+                        <group string="Medical Fitness Information">
+                            <field name="med_no"/>
+                            <field name="med_expire"/>
+
+
+                        </group>
+                        <group/>
+                        <group string="Driving License Information">
+                            <field name="drive_no"/>
+                            <field name="drive_expire"/>
+
+
+                        </group>
+                        
+                        
                     </group>
 
                 </page>
@@ -151,11 +150,6 @@
                    position="attributes">
                 <attribute name="invisible">True</attribute>
                 <attribute name="widget">binary</attribute>
-            </xpath>
-
-            <xpath expr="//page[@name='paper']/group[1]/group[1]" position="inside">
-                <xpath expr="//field[@name='visa_no']" position="move"/>
-                <xpath expr="//field[@name='visa_expire']" position="move"/>
             </xpath>
 
             <xpath expr="//field[@name='passport_id']" position="attributes">
@@ -210,6 +204,7 @@
                 <xpath expr="//page[@name='skills_resume']" position="move"/>
                 <xpath expr="//page[@name='received_badges']" position="move"/>
             </xpath>
+           
         </field>
     </record>
     <record id="hr_employee_view_form_inherit_main" model="ir.ui.view">
@@ -230,6 +225,21 @@
 
         </field>
     </record>
+ 
+    <record id="hr_employee_view_form_inherited_page" model="ir.ui.view">
+        <field name="name">hr.employee.view.form.inherit</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='personal_information']/group[1]/group[1]" position="after">
+                <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='personal_information']/group[1]/group[not(@name)][4]" position="move"/>
+            </xpath>
+            <xpath expr="//form[1]/sheet[1]/notebook[1]/page[2]/group[1]/group[5]" position="after">
+                <xpath expr="//form[1]/sheet[1]/notebook[1]/page[2]/group[1]/group[3]" position="move"/>
+            </xpath>    
+        </field>
+  </record>
+ 
 
     <record model="ir.ui.view" id="hr_employee_resigned_filter">
         <field name="name">hr.employee.form.filter.inherit</field>
@@ -286,5 +296,4 @@
         <field name="code">action = records.start_up_data()</field>
 
     </record>
-
 </odoo>
