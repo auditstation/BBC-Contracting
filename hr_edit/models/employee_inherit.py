@@ -14,7 +14,7 @@ class ResPartnerBank(models.Model):
     def create(self, vals_list):
         res = super().create(vals_list)
         for i in res:
-            if i.partner_id and self.env.context.get('import_file'):
+            if i.partner_id and self.env.context.get('import_file') and i.partner_id.employee_ids:
                 i.partner_id.employee_ids[0].bank_account_id = i.id
         return res
 class EmployeeInherit(models.Model):
