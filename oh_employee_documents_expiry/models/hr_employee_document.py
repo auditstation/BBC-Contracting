@@ -76,7 +76,7 @@ class HrEmployeeDocument(models.Model):
     def mail_reminder(self):
         """Sending document expiry notification to employees."""
         for record in self.search([('expiry_date', '!=', False)]):
-            
+            record._check_expiry_date()
             exp_date = fields.Date.from_string(record.expiry_date)
             days_before = timedelta(days=record.before_days or 0)
             is_expiry_today = fields.Date.today() == exp_date
